@@ -41,7 +41,7 @@
 	<li>Apache: 2.2 or higher</li>
 	<li>SSL Certificate</li>
 	<li>Cron tasks edition</li>
-	<li>PHP: 7.0 to 7.2</li>
+	<li>PHP: 7.0 to 7.4</li>
 	<li>Storage: 100 MB or higher</li>
 	<li>Output Buffering: -1</li>
 	<li>MEMORY_LIMIT: 256 MB or higher</li>
