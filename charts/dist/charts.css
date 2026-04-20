@@ -1,0 +1,2994 @@
+/*
+ * Charts.css v1.0.0 (https://ChartsCSS.org/)
+ * Copyright 2020 Rami Yushuvaev
+ * Licensed under MIT
+ */
+.charts-css {
+  --color-1: rgba(240, 50, 50, 0.75);
+  --color-2: rgba(255, 180, 50, 0.75);
+  --color-3: rgba(255, 220, 90, 0.75);
+  --color-4: rgba(100, 210, 80, 0.75);
+  --color-5: rgba(90, 165, 255, 0.75);
+  --color-6: rgba(170, 90, 240, 0.75);
+  --color-7: rgba(180, 180, 180, 0.75);
+  --color-8: rgba(110, 110, 110, 0.75);
+  --color-9: rgba(170, 150, 110, 0.75);
+  --color-10: rgba(130, 50, 20, 0.75);
+  --chart-bg-color: #f5f5f5;
+  --heading-size: 0px;
+  --primary-axis-color: rgba(0, 0, 0, 1);
+  --primary-axis-style: solid;
+  --primary-axis-width: 1px;
+  --secondary-axes-color: rgba(0, 0, 0, .15);
+  --secondary-axes-style: solid;
+  --secondary-axes-width: 1px;
+  --data-axes-color: rgba(0, 0, 0, .15);
+  --data-axes-style: solid;
+  --data-axes-width: 1px;
+  --legend-border-color: rgb(200, 200, 200);
+  --legend-border-style: solid;
+  --legend-border-width: 1px;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+}
+
+/*
+ * Chart custom properties
+ */
+@property --color,
+@property --color-1,
+@property --color-2,
+@property --color-3,
+@property --color-4,
+@property --color-5,
+@property --color-6,
+@property --color-7,
+@property --color-8,
+@property --color-9,
+@property --color-10,
+@property --chart-bg-color {
+  syntax: '<color>';
+  initial-value: transparent;
+  inherits: true;
+}
+
+@property --heading-size {
+  syntax: '<length>';
+  initial-value: 0;
+  inherits: true;
+}
+
+@property --labels-size {
+  syntax: '<length>';
+  initial-value: 0;
+  inherits: true;
+}
+
+@property --labels-align {
+  syntax: '<string>';
+  initial-value: center;
+  inherits: true;
+}
+
+@property --primary-axis-width,
+@property --secondary-axes-width,
+@property --data-axes-width,
+@property --legend-border-width {
+  syntax: '<length>';
+  initial-value: 1px;
+  inherits: true;
+}
+
+@property --primary-axis-style,
+@property --secondary-axes-style,
+@property --data-axes-style,
+@property --legend-border-style {
+  syntax: '<line-style>';
+  initial-value: solid;
+  inherits: true;
+}
+
+@property --primary-axis-color,
+@property --secondary-axes-color,
+@property --data-axes-color,
+@property --legend-border-color {
+  syntax: '<color>';
+  initial-value: transparent;
+  inherits: true;
+}
+
+@property --start,
+@property --end,
+@property --size,
+@property --line-size {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: true;
+}
+
+/*
+ * Chart wrapper element
+ */
+
+.charts-css, .charts-css::after, .charts-css::before,
+.charts-css *,
+.charts-css *::after,
+.charts-css *::before {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+/*
+ * Reset table element
+ */
+table.charts-css {
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  overflow: initial;
+  background-color: transparent;
+}
+
+table.charts-css caption,
+table.charts-css colgroup,
+table.charts-css thead,
+table.charts-css tbody,
+table.charts-css tr,
+table.charts-css th,
+table.charts-css td {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+table.charts-css colgroup,
+table.charts-css thead,
+table.charts-css tfoot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+table.charts-css tbody {
+  position: relative;
+}
+
+/*
+ * Reset list elements
+ */
+ul.charts-css,
+ol.charts-css {
+  list-style-type: none;
+}
+
+ul.charts-css li,
+ol.charts-css li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/*
+ * Chart heading
+ */
+.charts-css:not(.show-heading) caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.charts-css.show-heading {
+  --heading-size: 1.5rem;
+}
+
+.charts-css.show-heading caption {
+  display: block;
+  width: 100%;
+  height: var(--heading-size);
+}
+
+/*
+ * Chart colors
+ */
+.charts-css.bar tbody tr:nth-of-type(10n + 1) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 1),
+.charts-css.column tbody tr:nth-of-type(10n + 1) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 1),
+.charts-css.area tbody tr td:nth-of-type(10n + 1)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 1)::before {
+  background: var(--color, var(--color-1));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 1) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 1) {
+  --c: var(--color, var(--color-1, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 2) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 2),
+.charts-css.column tbody tr:nth-of-type(10n + 2) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 2),
+.charts-css.area tbody tr td:nth-of-type(10n + 2)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 2)::before {
+  background: var(--color, var(--color-2));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 2) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 2) {
+  --c: var(--color, var(--color-2, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 3) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 3),
+.charts-css.column tbody tr:nth-of-type(10n + 3) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 3),
+.charts-css.area tbody tr td:nth-of-type(10n + 3)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 3)::before {
+  background: var(--color, var(--color-3));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 3) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 3) {
+  --c: var(--color, var(--color-3, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 4) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 4),
+.charts-css.column tbody tr:nth-of-type(10n + 4) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 4),
+.charts-css.area tbody tr td:nth-of-type(10n + 4)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 4)::before {
+  background: var(--color, var(--color-4));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 4) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 4) {
+  --c: var(--color, var(--color-4, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 5) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 5),
+.charts-css.column tbody tr:nth-of-type(10n + 5) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 5),
+.charts-css.area tbody tr td:nth-of-type(10n + 5)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 5)::before {
+  background: var(--color, var(--color-5));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 5) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 5) {
+  --c: var(--color, var(--color-5, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 6) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 6),
+.charts-css.column tbody tr:nth-of-type(10n + 6) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 6),
+.charts-css.area tbody tr td:nth-of-type(10n + 6)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 6)::before {
+  background: var(--color, var(--color-6));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 6) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 6) {
+  --c: var(--color, var(--color-6, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 7) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 7),
+.charts-css.column tbody tr:nth-of-type(10n + 7) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 7),
+.charts-css.area tbody tr td:nth-of-type(10n + 7)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 7)::before {
+  background: var(--color, var(--color-7));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 7) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 7) {
+  --c: var(--color, var(--color-7, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 8) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 8),
+.charts-css.column tbody tr:nth-of-type(10n + 8) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 8),
+.charts-css.area tbody tr td:nth-of-type(10n + 8)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 8)::before {
+  background: var(--color, var(--color-8));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 8) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 8) {
+  --c: var(--color, var(--color-8, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 9) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 9),
+.charts-css.column tbody tr:nth-of-type(10n + 9) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 9),
+.charts-css.area tbody tr td:nth-of-type(10n + 9)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 9)::before {
+  background: var(--color, var(--color-9));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 9) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 9) {
+  --c: var(--color, var(--color-9, transparent) );
+}
+
+.charts-css.bar tbody tr:nth-of-type(10n + 10) td,
+.charts-css.bar.multiple tbody tr td:nth-of-type(10n + 10),
+.charts-css.column tbody tr:nth-of-type(10n + 10) td,
+.charts-css.column.multiple tbody tr td:nth-of-type(10n + 10),
+.charts-css.area tbody tr td:nth-of-type(10n + 10)::before,
+.charts-css.line tbody tr td:nth-of-type(10n + 10)::before {
+  background: var(--color, var(--color-10));
+}
+
+.charts-css.pie tbody tr:nth-of-type(10n + 10) td,
+.charts-css.pie.multiple tbody tr td:nth-of-type(10n + 10) {
+  --c: var(--color, var(--color-10, transparent) );
+}
+
+/*
+ * Chart data
+ */
+.charts-css.hide-data .data,
+.charts-css.hide-data .data:not(:focus):not(:focus-within) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.charts-css.show-data-on-hover .data {
+  -webkit-transition-duration: .3s;
+          transition-duration: .3s;
+  opacity: 0;
+}
+
+.charts-css.show-data-on-hover tr:hover .data {
+  -webkit-transition-duration: .3s;
+          transition-duration: .3s;
+  opacity: 1;
+}
+
+.charts-css.radial.show-data-on-hover tbody:hover .data, .charts-css.pie.show-data-on-hover tbody:hover .data, .charts-css.polar.show-data-on-hover tbody:hover .data, .charts-css.radar.show-data-on-hover tbody:hover .data {
+  -webkit-transition-duration: .3s;
+          transition-duration: .3s;
+  opacity: 1;
+}
+
+/*
+ * Chart labels
+ */
+.charts-css.bar:not(.show-labels) {
+  --labels-size: 0;
+}
+
+.charts-css.bar:not(.show-labels) tbody tr th {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.charts-css.bar.show-labels {
+  --labels-size: 80px;
+}
+
+.charts-css.bar.show-labels tbody tr th {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: var(--labels-align, center);
+      -ms-flex-align: var(--labels-align, center);
+          align-items: var(--labels-align, center);
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.charts-css.bar.show-labels tr.hide-label th,
+.charts-css.bar.show-labels th.hide-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.charts-css.column:not(.show-labels), .charts-css.area:not(.show-labels), .charts-css.line:not(.show-labels) {
+  --labels-size: 0;
+}
+
+.charts-css.column:not(.show-labels) tbody tr th, .charts-css.area:not(.show-labels) tbody tr th, .charts-css.line:not(.show-labels) tbody tr th {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.charts-css.column.show-labels, .charts-css.area.show-labels, .charts-css.line.show-labels {
+  --labels-size: 1.5rem;
+}
+
+.charts-css.column.show-labels tbody tr th, .charts-css.area.show-labels tbody tr th, .charts-css.line.show-labels tbody tr th {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: var(--labels-align, center);
+      -ms-flex-align: var(--labels-align, center);
+          align-items: var(--labels-align, center);
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.charts-css.column.show-labels tr.hide-label th,
+.charts-css.column.show-labels th.hide-label, .charts-css.area.show-labels tr.hide-label th,
+.charts-css.area.show-labels th.hide-label, .charts-css.line.show-labels tr.hide-label th,
+.charts-css.line.show-labels th.hide-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.charts-css.bar.labels-align-start tbody tr th, .charts-css.column.labels-align-start tbody tr th, .charts-css.area.labels-align-start tbody tr th, .charts-css.line.labels-align-start tbody tr th {
+  -webkit-box-align: var(--labels-align, flex-start);
+      -ms-flex-align: var(--labels-align, flex-start);
+          align-items: var(--labels-align, flex-start);
+}
+
+.charts-css.bar.labels-align-end tbody tr th, .charts-css.column.labels-align-end tbody tr th, .charts-css.area.labels-align-end tbody tr th, .charts-css.line.labels-align-end tbody tr th {
+  -webkit-box-align: var(--labels-align, flex-end);
+      -ms-flex-align: var(--labels-align, flex-end);
+          align-items: var(--labels-align, flex-end);
+}
+
+.charts-css.bar.labels-align-center tbody tr th, .charts-css.column.labels-align-center tbody tr th, .charts-css.area.labels-align-center tbody tr th, .charts-css.line.labels-align-center tbody tr th {
+  -webkit-box-align: var(--labels-align, center);
+      -ms-flex-align: var(--labels-align, center);
+          align-items: var(--labels-align, center);
+}
+
+/*
+ * Chart axes
+ */
+.charts-css.column.show-primary-axis:not(.reverse) tbody tr, .charts-css.area.show-primary-axis:not(.reverse) tbody tr, .charts-css.line.show-primary-axis:not(.reverse) tbody tr {
+  -webkit-border-after: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+          border-block-end: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+}
+
+.charts-css.column.show-primary-axis.reverse tbody tr, .charts-css.area.show-primary-axis.reverse tbody tr, .charts-css.line.show-primary-axis.reverse tbody tr {
+  -webkit-border-before: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+          border-block-start: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+}
+
+.charts-css.column.show-1-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-1-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-1-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 100%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-1-secondary-axes.reverse tbody tr, .charts-css.area.show-1-secondary-axes.reverse tbody tr, .charts-css.line.show-1-secondary-axes.reverse tbody tr {
+  background-size: 100% 100%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-2-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-2-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-2-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 50%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-2-secondary-axes.reverse tbody tr, .charts-css.area.show-2-secondary-axes.reverse tbody tr, .charts-css.line.show-2-secondary-axes.reverse tbody tr {
+  background-size: 100% 50%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-3-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-3-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-3-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 33.333333%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-3-secondary-axes.reverse tbody tr, .charts-css.area.show-3-secondary-axes.reverse tbody tr, .charts-css.line.show-3-secondary-axes.reverse tbody tr {
+  background-size: 100% 33.333333%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-4-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-4-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-4-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 25%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-4-secondary-axes.reverse tbody tr, .charts-css.area.show-4-secondary-axes.reverse tbody tr, .charts-css.line.show-4-secondary-axes.reverse tbody tr {
+  background-size: 100% 25%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-5-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-5-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-5-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 20%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-5-secondary-axes.reverse tbody tr, .charts-css.area.show-5-secondary-axes.reverse tbody tr, .charts-css.line.show-5-secondary-axes.reverse tbody tr {
+  background-size: 100% 20%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-6-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-6-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-6-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 16.666667%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-6-secondary-axes.reverse tbody tr, .charts-css.area.show-6-secondary-axes.reverse tbody tr, .charts-css.line.show-6-secondary-axes.reverse tbody tr {
+  background-size: 100% 16.666667%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-7-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-7-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-7-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 14.285714%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-7-secondary-axes.reverse tbody tr, .charts-css.area.show-7-secondary-axes.reverse tbody tr, .charts-css.line.show-7-secondary-axes.reverse tbody tr {
+  background-size: 100% 14.285714%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-8-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-8-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-8-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 12.5%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-8-secondary-axes.reverse tbody tr, .charts-css.area.show-8-secondary-axes.reverse tbody tr, .charts-css.line.show-8-secondary-axes.reverse tbody tr {
+  background-size: 100% 12.5%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-9-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-9-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-9-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 11.111111%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-9-secondary-axes.reverse tbody tr, .charts-css.area.show-9-secondary-axes.reverse tbody tr, .charts-css.line.show-9-secondary-axes.reverse tbody tr {
+  background-size: 100% 11.111111%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-10-secondary-axes:not(.reverse) tbody tr, .charts-css.area.show-10-secondary-axes:not(.reverse) tbody tr, .charts-css.line.show-10-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 10%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-10-secondary-axes.reverse tbody tr, .charts-css.area.show-10-secondary-axes.reverse tbody tr, .charts-css.line.show-10-secondary-axes.reverse tbody tr {
+  background-size: 100% 10%;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(0deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.column.show-data-axes tbody tr, .charts-css.area.show-data-axes tbody tr, .charts-css.line.show-data-axes tbody tr {
+  -webkit-border-end: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-inline-end: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.column.show-data-axes:not(.reverse-data) tbody tr:first-of-type, .charts-css.area.show-data-axes:not(.reverse-data) tbody tr:first-of-type, .charts-css.line.show-data-axes:not(.reverse-data) tbody tr:first-of-type {
+  -webkit-border-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-inline-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.column.show-data-axes.reverse-data tbody tr:last-of-type, .charts-css.area.show-data-axes.reverse-data tbody tr:last-of-type, .charts-css.line.show-data-axes.reverse-data tbody tr:last-of-type {
+  -webkit-border-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-inline-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.column.show-dataset-axes tbody tr td, .charts-css.area.show-dataset-axes tbody tr td, .charts-css.line.show-dataset-axes tbody tr td {
+  -webkit-border-end: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-inline-end: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.column.show-dataset-axes:not(.reverse-data) tbody tr:first-of-type td, .charts-css.area.show-dataset-axes:not(.reverse-data) tbody tr:first-of-type td, .charts-css.line.show-dataset-axes:not(.reverse-data) tbody tr:first-of-type td {
+  -webkit-border-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-inline-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.column.show-dataset-axes.reverse-data tbody tr:last-of-type td, .charts-css.area.show-dataset-axes.reverse-data tbody tr:last-of-type td, .charts-css.line.show-dataset-axes.reverse-data tbody tr:last-of-type td {
+  -webkit-border-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-inline-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.bar.show-primary-axis:not(.reverse) tbody tr {
+  -webkit-border-start: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+          border-inline-start: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+}
+
+.charts-css.bar.show-primary-axis.reverse tbody tr {
+  -webkit-border-end: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+          border-inline-end: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+}
+
+.charts-css.bar.show-1-secondary-axes:not(.reverse) tbody tr {
+  background-size: 100% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-1-secondary-axes.reverse tbody tr {
+  background-size: 100% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-2-secondary-axes:not(.reverse) tbody tr {
+  background-size: 50% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-2-secondary-axes.reverse tbody tr {
+  background-size: 50% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-3-secondary-axes:not(.reverse) tbody tr {
+  background-size: 33.333333% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-3-secondary-axes.reverse tbody tr {
+  background-size: 33.333333% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-4-secondary-axes:not(.reverse) tbody tr {
+  background-size: 25% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-4-secondary-axes.reverse tbody tr {
+  background-size: 25% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-5-secondary-axes:not(.reverse) tbody tr {
+  background-size: 20% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-5-secondary-axes.reverse tbody tr {
+  background-size: 20% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-6-secondary-axes:not(.reverse) tbody tr {
+  background-size: 16.666667% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-6-secondary-axes.reverse tbody tr {
+  background-size: 16.666667% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-7-secondary-axes:not(.reverse) tbody tr {
+  background-size: 14.285714% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-7-secondary-axes.reverse tbody tr {
+  background-size: 14.285714% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-8-secondary-axes:not(.reverse) tbody tr {
+  background-size: 12.5% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-8-secondary-axes.reverse tbody tr {
+  background-size: 12.5% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-9-secondary-axes:not(.reverse) tbody tr {
+  background-size: 11.111111% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-9-secondary-axes.reverse tbody tr {
+  background-size: 11.111111% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-10-secondary-axes:not(.reverse) tbody tr {
+  background-size: 10% 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(-90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-10-secondary-axes.reverse tbody tr {
+  background-size: 10% 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(var(--secondary-axes-color)), to(transparent));
+  background-image: linear-gradient(90deg, var(--secondary-axes-color) var(--secondary-axes-width), transparent var(--secondary-axes-width));
+}
+
+.charts-css.bar.show-data-axes tbody tr {
+  -webkit-border-after: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-block-end: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.bar.show-data-axes:not(.reverse-data) tbody tr:first-of-type {
+  -webkit-border-before: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-block-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.bar.show-data-axes.reverse-data tbody tr:last-of-type {
+  -webkit-border-before: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-block-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.bar.show-dataset-axes tbody tr td {
+  -webkit-border-after: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-block-end: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.bar.show-dataset-axes:not(.reverse-data) tbody tr:first-of-type td {
+  -webkit-border-before: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-block-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.bar.show-dataset-axes.reverse-data tbody tr:last-of-type td {
+  -webkit-border-before: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+          border-block-start: var(--data-axes-width) var(--data-axes-style) var(--data-axes-color);
+}
+
+.charts-css.radial.show-primary-axis tbody, .charts-css.pie.show-primary-axis tbody, .charts-css.polar.show-primary-axis tbody, .charts-css.radar.show-primary-axis tbody {
+  border: var(--primary-axis-width) var(--primary-axis-style) var(--primary-axis-color);
+}
+
+.charts-css.radial.show-1-secondary-axes tbody::after, .charts-css.pie.show-1-secondary-axes tbody::after, .charts-css.polar.show-1-secondary-axes tbody::after, .charts-css.radar.show-1-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 2 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 2 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 2), transparent calc( 100% / 2 + var( --secondary-axes-width )), transparent calc( 100% / 2 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-2-secondary-axes tbody::after, .charts-css.pie.show-2-secondary-axes tbody::after, .charts-css.polar.show-2-secondary-axes tbody::after, .charts-css.radar.show-2-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 3 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 3 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 3), transparent calc( 100% / 3 + var( --secondary-axes-width )), transparent calc( 100% / 3 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-3-secondary-axes tbody::after, .charts-css.pie.show-3-secondary-axes tbody::after, .charts-css.polar.show-3-secondary-axes tbody::after, .charts-css.radar.show-3-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 4 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 4 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 4), transparent calc( 100% / 4 + var( --secondary-axes-width )), transparent calc( 100% / 4 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-4-secondary-axes tbody::after, .charts-css.pie.show-4-secondary-axes tbody::after, .charts-css.polar.show-4-secondary-axes tbody::after, .charts-css.radar.show-4-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 5 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 5 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 5), transparent calc( 100% / 5 + var( --secondary-axes-width )), transparent calc( 100% / 5 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-5-secondary-axes tbody::after, .charts-css.pie.show-5-secondary-axes tbody::after, .charts-css.polar.show-5-secondary-axes tbody::after, .charts-css.radar.show-5-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 6 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 6 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 6), transparent calc( 100% / 6 + var( --secondary-axes-width )), transparent calc( 100% / 6 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-6-secondary-axes tbody::after, .charts-css.pie.show-6-secondary-axes tbody::after, .charts-css.polar.show-6-secondary-axes tbody::after, .charts-css.radar.show-6-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 7 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 7 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 7), transparent calc( 100% / 7 + var( --secondary-axes-width )), transparent calc( 100% / 7 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-7-secondary-axes tbody::after, .charts-css.pie.show-7-secondary-axes tbody::after, .charts-css.polar.show-7-secondary-axes tbody::after, .charts-css.radar.show-7-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 8 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 8 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 8), transparent calc( 100% / 8 + var( --secondary-axes-width )), transparent calc( 100% / 8 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-8-secondary-axes tbody::after, .charts-css.pie.show-8-secondary-axes tbody::after, .charts-css.polar.show-8-secondary-axes tbody::after, .charts-css.radar.show-8-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 9 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 9 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 9), transparent calc( 100% / 9 + var( --secondary-axes-width )), transparent calc( 100% / 9 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-9-secondary-axes tbody::after, .charts-css.pie.show-9-secondary-axes tbody::after, .charts-css.polar.show-9-secondary-axes tbody::after, .charts-css.radar.show-9-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 10 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 10 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 10), transparent calc( 100% / 10 + var( --secondary-axes-width )), transparent calc( 100% / 10 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+.charts-css.radial.show-10-secondary-axes tbody::after, .charts-css.pie.show-10-secondary-axes tbody::after, .charts-css.polar.show-10-secondary-axes tbody::after, .charts-css.radar.show-10-secondary-axes tbody::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(closest-side, transparent 0, transparent calc( 100% / 11 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 11 - var( --secondary-axes-width )), var(--secondary-axes-color) calc( 100% / 11), transparent calc( 100% / 11 + var( --secondary-axes-width )), transparent calc( 100% / 11 + var( --secondary-axes-width )));
+  z-index: 2;
+}
+
+/*
+ * Chart legend
+ */
+.charts-css.legend {
+  padding: 1rem;
+  border: var(--legend-border-width) var(--legend-border-style) var(--legend-border-color);
+  list-style: none;
+  font-size: 1rem;
+}
+
+.charts-css.legend li {
+  line-height: 2;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.charts-css.legend li::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-margin-end: .5rem;
+          margin-inline-end: .5rem;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.charts-css.legend li:nth-child(1)::before {
+  background-color: var(--color-1, transparent);
+  border-color: var(--border-color-1, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(2)::before {
+  background-color: var(--color-2, transparent);
+  border-color: var(--border-color-2, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(3)::before {
+  background-color: var(--color-3, transparent);
+  border-color: var(--border-color-3, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(4)::before {
+  background-color: var(--color-4, transparent);
+  border-color: var(--border-color-4, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(5)::before {
+  background-color: var(--color-5, transparent);
+  border-color: var(--border-color-5, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(6)::before {
+  background-color: var(--color-6, transparent);
+  border-color: var(--border-color-6, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(7)::before {
+  background-color: var(--color-7, transparent);
+  border-color: var(--border-color-7, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(8)::before {
+  background-color: var(--color-8, transparent);
+  border-color: var(--border-color-8, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(9)::before {
+  background-color: var(--color-9, transparent);
+  border-color: var(--border-color-9, var(--border-color, #000));
+}
+
+.charts-css.legend li:nth-child(10)::before {
+  background-color: var(--color-10, transparent);
+  border-color: var(--border-color-10, var(--border-color, #000));
+}
+
+.charts-css:not(.legend-inline) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.charts-css.legend-inline {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.charts-css.legend-inline li {
+  -webkit-margin-end: 1rem;
+          margin-inline-end: 1rem;
+}
+
+.charts-css.legend-circle li::before {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+}
+
+.charts-css.legend-ellipse li::before {
+  width: 2rem;
+  height: 1rem;
+  border-radius: 50%;
+}
+
+.charts-css.legend-square li::before {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 3px;
+}
+
+.charts-css.legend-rhombus li::before {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 3px;
+  -webkit-transform: rotate(45deg) scale(0.85);
+          transform: rotate(45deg) scale(0.85);
+}
+
+.charts-css.legend-rectangle li::before {
+  width: 2rem;
+  height: 1rem;
+  border-radius: 3px;
+}
+
+.charts-css.legend-line li::before {
+  width: 2rem;
+  height: 3px;
+  border-radius: 2px;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+}
+
+/*
+ * Chart tooltips
+ */
+.charts-css .tooltip {
+  position: absolute;
+  z-index: 1;
+  bottom: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 5px 10px;
+  border-radius: 6px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity .3s;
+  transition: opacity .3s;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  font-size: .9rem;
+}
+
+.charts-css .tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent;
+}
+
+.charts-css td:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/*
+ * Bar Chart
+ */
+.charts-css.bar tbody {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  width: 100%;
+  height: calc(100% - var(--heading-size));
+}
+
+.charts-css.bar tbody tr {
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.charts-css.bar tbody tr th {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.charts-css.bar tbody tr td {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: calc(100% * var(--end, var(--size, 1)));
+  height: 100%;
+  position: relative;
+}
+
+.charts-css.bar:not(.reverse) tbody tr {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-margin-start: var(--labels-size);
+          margin-inline-start: var(--labels-size);
+}
+
+.charts-css.bar:not(.reverse) tbody tr th {
+  left: calc(-1 * var(--labels-size) - var(--primary-axis-width));
+  width: var(--labels-size);
+}
+
+.charts-css.bar:not(.reverse) tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.charts-css.bar.reverse tbody tr {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-margin-end: var(--labels-size);
+          margin-inline-end: var(--labels-size);
+}
+
+.charts-css.bar.reverse tbody tr th {
+  right: calc(-1 * var(--labels-size) - var(--primary-axis-width));
+  width: var(--labels-size);
+}
+
+.charts-css.bar.reverse tbody tr td {
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.charts-css.bar:not(.stacked) tbody tr td {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+}
+
+.charts-css.bar.stacked tbody tr td {
+  -webkit-box-flex: unset;
+      -ms-flex-positive: unset;
+          flex-grow: unset;
+  -ms-flex-negative: unset;
+      flex-shrink: unset;
+  -ms-flex-preferred-size: unset;
+      flex-basis: unset;
+}
+
+.charts-css.bar.stacked.reverse-datasets tbody tr {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.charts-css.bar:not(.reverse-data) tbody {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.charts-css.bar.reverse-data tbody {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+}
+
+.charts-css.bar:not(.reverse-datasets):not(.stacked) tbody tr {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.charts-css.bar:not(.reverse-datasets).stacked:not(.reverse) tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.charts-css.bar:not(.reverse-datasets).stacked.reverse tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.charts-css.bar.reverse-datasets:not(.stacked) tbody tr {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+}
+
+.charts-css.bar.reverse-datasets.stacked:not(.reverse) tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.charts-css.bar.reverse-datasets.stacked.reverse tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.charts-css.bar.data-spacing-1 tbody tr {
+  -webkit-padding-before: 1px;
+          padding-block-start: 1px;
+  -webkit-padding-after: 1px;
+          padding-block-end: 1px;
+}
+
+.charts-css.bar.data-spacing-2 tbody tr {
+  -webkit-padding-before: 2px;
+          padding-block-start: 2px;
+  -webkit-padding-after: 2px;
+          padding-block-end: 2px;
+}
+
+.charts-css.bar.data-spacing-3 tbody tr {
+  -webkit-padding-before: 3px;
+          padding-block-start: 3px;
+  -webkit-padding-after: 3px;
+          padding-block-end: 3px;
+}
+
+.charts-css.bar.data-spacing-4 tbody tr {
+  -webkit-padding-before: 4px;
+          padding-block-start: 4px;
+  -webkit-padding-after: 4px;
+          padding-block-end: 4px;
+}
+
+.charts-css.bar.data-spacing-5 tbody tr {
+  -webkit-padding-before: 5px;
+          padding-block-start: 5px;
+  -webkit-padding-after: 5px;
+          padding-block-end: 5px;
+}
+
+.charts-css.bar.data-spacing-6 tbody tr {
+  -webkit-padding-before: 6px;
+          padding-block-start: 6px;
+  -webkit-padding-after: 6px;
+          padding-block-end: 6px;
+}
+
+.charts-css.bar.data-spacing-7 tbody tr {
+  -webkit-padding-before: 7px;
+          padding-block-start: 7px;
+  -webkit-padding-after: 7px;
+          padding-block-end: 7px;
+}
+
+.charts-css.bar.data-spacing-8 tbody tr {
+  -webkit-padding-before: 8px;
+          padding-block-start: 8px;
+  -webkit-padding-after: 8px;
+          padding-block-end: 8px;
+}
+
+.charts-css.bar.data-spacing-9 tbody tr {
+  -webkit-padding-before: 9px;
+          padding-block-start: 9px;
+  -webkit-padding-after: 9px;
+          padding-block-end: 9px;
+}
+
+.charts-css.bar.data-spacing-10 tbody tr {
+  -webkit-padding-before: 10px;
+          padding-block-start: 10px;
+  -webkit-padding-after: 10px;
+          padding-block-end: 10px;
+}
+
+.charts-css.bar.data-spacing-11 tbody tr {
+  -webkit-padding-before: 11px;
+          padding-block-start: 11px;
+  -webkit-padding-after: 11px;
+          padding-block-end: 11px;
+}
+
+.charts-css.bar.data-spacing-12 tbody tr {
+  -webkit-padding-before: 12px;
+          padding-block-start: 12px;
+  -webkit-padding-after: 12px;
+          padding-block-end: 12px;
+}
+
+.charts-css.bar.data-spacing-13 tbody tr {
+  -webkit-padding-before: 13px;
+          padding-block-start: 13px;
+  -webkit-padding-after: 13px;
+          padding-block-end: 13px;
+}
+
+.charts-css.bar.data-spacing-14 tbody tr {
+  -webkit-padding-before: 14px;
+          padding-block-start: 14px;
+  -webkit-padding-after: 14px;
+          padding-block-end: 14px;
+}
+
+.charts-css.bar.data-spacing-15 tbody tr {
+  -webkit-padding-before: 15px;
+          padding-block-start: 15px;
+  -webkit-padding-after: 15px;
+          padding-block-end: 15px;
+}
+
+.charts-css.bar.data-spacing-16 tbody tr {
+  -webkit-padding-before: 16px;
+          padding-block-start: 16px;
+  -webkit-padding-after: 16px;
+          padding-block-end: 16px;
+}
+
+.charts-css.bar.data-spacing-17 tbody tr {
+  -webkit-padding-before: 17px;
+          padding-block-start: 17px;
+  -webkit-padding-after: 17px;
+          padding-block-end: 17px;
+}
+
+.charts-css.bar.data-spacing-18 tbody tr {
+  -webkit-padding-before: 18px;
+          padding-block-start: 18px;
+  -webkit-padding-after: 18px;
+          padding-block-end: 18px;
+}
+
+.charts-css.bar.data-spacing-19 tbody tr {
+  -webkit-padding-before: 19px;
+          padding-block-start: 19px;
+  -webkit-padding-after: 19px;
+          padding-block-end: 19px;
+}
+
+.charts-css.bar.data-spacing-20 tbody tr {
+  -webkit-padding-before: 20px;
+          padding-block-start: 20px;
+  -webkit-padding-after: 20px;
+          padding-block-end: 20px;
+}
+
+.charts-css.bar.datasets-spacing-1 tbody tr td {
+  -webkit-margin-before: 1px;
+          margin-block-start: 1px;
+  -webkit-margin-after: 1px;
+          margin-block-end: 1px;
+}
+
+.charts-css.bar.datasets-spacing-2 tbody tr td {
+  -webkit-margin-before: 2px;
+          margin-block-start: 2px;
+  -webkit-margin-after: 2px;
+          margin-block-end: 2px;
+}
+
+.charts-css.bar.datasets-spacing-3 tbody tr td {
+  -webkit-margin-before: 3px;
+          margin-block-start: 3px;
+  -webkit-margin-after: 3px;
+          margin-block-end: 3px;
+}
+
+.charts-css.bar.datasets-spacing-4 tbody tr td {
+  -webkit-margin-before: 4px;
+          margin-block-start: 4px;
+  -webkit-margin-after: 4px;
+          margin-block-end: 4px;
+}
+
+.charts-css.bar.datasets-spacing-5 tbody tr td {
+  -webkit-margin-before: 5px;
+          margin-block-start: 5px;
+  -webkit-margin-after: 5px;
+          margin-block-end: 5px;
+}
+
+.charts-css.bar.datasets-spacing-6 tbody tr td {
+  -webkit-margin-before: 6px;
+          margin-block-start: 6px;
+  -webkit-margin-after: 6px;
+          margin-block-end: 6px;
+}
+
+.charts-css.bar.datasets-spacing-7 tbody tr td {
+  -webkit-margin-before: 7px;
+          margin-block-start: 7px;
+  -webkit-margin-after: 7px;
+          margin-block-end: 7px;
+}
+
+.charts-css.bar.datasets-spacing-8 tbody tr td {
+  -webkit-margin-before: 8px;
+          margin-block-start: 8px;
+  -webkit-margin-after: 8px;
+          margin-block-end: 8px;
+}
+
+.charts-css.bar.datasets-spacing-9 tbody tr td {
+  -webkit-margin-before: 9px;
+          margin-block-start: 9px;
+  -webkit-margin-after: 9px;
+          margin-block-end: 9px;
+}
+
+.charts-css.bar.datasets-spacing-10 tbody tr td {
+  -webkit-margin-before: 10px;
+          margin-block-start: 10px;
+  -webkit-margin-after: 10px;
+          margin-block-end: 10px;
+}
+
+.charts-css.bar.datasets-spacing-11 tbody tr td {
+  -webkit-margin-before: 11px;
+          margin-block-start: 11px;
+  -webkit-margin-after: 11px;
+          margin-block-end: 11px;
+}
+
+.charts-css.bar.datasets-spacing-12 tbody tr td {
+  -webkit-margin-before: 12px;
+          margin-block-start: 12px;
+  -webkit-margin-after: 12px;
+          margin-block-end: 12px;
+}
+
+.charts-css.bar.datasets-spacing-13 tbody tr td {
+  -webkit-margin-before: 13px;
+          margin-block-start: 13px;
+  -webkit-margin-after: 13px;
+          margin-block-end: 13px;
+}
+
+.charts-css.bar.datasets-spacing-14 tbody tr td {
+  -webkit-margin-before: 14px;
+          margin-block-start: 14px;
+  -webkit-margin-after: 14px;
+          margin-block-end: 14px;
+}
+
+.charts-css.bar.datasets-spacing-15 tbody tr td {
+  -webkit-margin-before: 15px;
+          margin-block-start: 15px;
+  -webkit-margin-after: 15px;
+          margin-block-end: 15px;
+}
+
+.charts-css.bar.datasets-spacing-16 tbody tr td {
+  -webkit-margin-before: 16px;
+          margin-block-start: 16px;
+  -webkit-margin-after: 16px;
+          margin-block-end: 16px;
+}
+
+.charts-css.bar.datasets-spacing-17 tbody tr td {
+  -webkit-margin-before: 17px;
+          margin-block-start: 17px;
+  -webkit-margin-after: 17px;
+          margin-block-end: 17px;
+}
+
+.charts-css.bar.datasets-spacing-18 tbody tr td {
+  -webkit-margin-before: 18px;
+          margin-block-start: 18px;
+  -webkit-margin-after: 18px;
+          margin-block-end: 18px;
+}
+
+.charts-css.bar.datasets-spacing-19 tbody tr td {
+  -webkit-margin-before: 19px;
+          margin-block-start: 19px;
+  -webkit-margin-after: 19px;
+          margin-block-end: 19px;
+}
+
+.charts-css.bar.datasets-spacing-20 tbody tr td {
+  -webkit-margin-before: 20px;
+          margin-block-start: 20px;
+  -webkit-margin-after: 20px;
+          margin-block-end: 20px;
+}
+
+/*
+ * Column Chart
+ */
+.charts-css.column tbody {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  width: 100%;
+  height: calc(100% - var(--heading-size));
+}
+
+.charts-css.column tbody tr {
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.charts-css.column tbody tr th {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.charts-css.column tbody tr td {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: calc(100% * var(--end, var(--size, 1)));
+  position: relative;
+}
+
+.charts-css.column:not(.reverse) tbody tr {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-margin-after: var(--labels-size);
+          margin-block-end: var(--labels-size);
+}
+
+.charts-css.column:not(.reverse) tbody tr th {
+  bottom: calc(-1 * var(--labels-size) - var(--primary-axis-width));
+  height: var(--labels-size);
+}
+
+.charts-css.column:not(.reverse) tbody tr td {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.charts-css.column.reverse tbody tr {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-margin-before: var(--labels-size);
+          margin-block-start: var(--labels-size);
+}
+
+.charts-css.column.reverse tbody tr th {
+  top: calc(-1 * var(--labels-size) - var(--primary-axis-width));
+  height: var(--labels-size);
+}
+
+.charts-css.column.reverse tbody tr td {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.charts-css.column:not(.stacked) tbody tr td {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+}
+
+.charts-css.column.stacked tbody tr td {
+  -webkit-box-flex: unset;
+      -ms-flex-positive: unset;
+          flex-grow: unset;
+  -ms-flex-negative: unset;
+      flex-shrink: unset;
+  -ms-flex-preferred-size: unset;
+      flex-basis: unset;
+}
+
+.charts-css.column.stacked.reverse-datasets tbody tr {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.charts-css.column:not(.reverse-data) tbody {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.charts-css.column.reverse-data tbody {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.charts-css.column:not(.reverse-datasets):not(.stacked) tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.charts-css.column:not(.reverse-datasets).stacked:not(.reverse) tbody tr {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+}
+
+.charts-css.column:not(.reverse-datasets).stacked.reverse tbody tr {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.charts-css.column.reverse-datasets:not(.stacked) tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.charts-css.column.reverse-datasets.stacked:not(.reverse) tbody tr {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.charts-css.column.reverse-datasets.stacked.reverse tbody tr {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+}
+
+.charts-css.column.data-spacing-1 tbody tr {
+  -webkit-padding-start: 1px;
+          padding-inline-start: 1px;
+  -webkit-padding-end: 1px;
+          padding-inline-end: 1px;
+}
+
+.charts-css.column.data-spacing-2 tbody tr {
+  -webkit-padding-start: 2px;
+          padding-inline-start: 2px;
+  -webkit-padding-end: 2px;
+          padding-inline-end: 2px;
+}
+
+.charts-css.column.data-spacing-3 tbody tr {
+  -webkit-padding-start: 3px;
+          padding-inline-start: 3px;
+  -webkit-padding-end: 3px;
+          padding-inline-end: 3px;
+}
+
+.charts-css.column.data-spacing-4 tbody tr {
+  -webkit-padding-start: 4px;
+          padding-inline-start: 4px;
+  -webkit-padding-end: 4px;
+          padding-inline-end: 4px;
+}
+
+.charts-css.column.data-spacing-5 tbody tr {
+  -webkit-padding-start: 5px;
+          padding-inline-start: 5px;
+  -webkit-padding-end: 5px;
+          padding-inline-end: 5px;
+}
+
+.charts-css.column.data-spacing-6 tbody tr {
+  -webkit-padding-start: 6px;
+          padding-inline-start: 6px;
+  -webkit-padding-end: 6px;
+          padding-inline-end: 6px;
+}
+
+.charts-css.column.data-spacing-7 tbody tr {
+  -webkit-padding-start: 7px;
+          padding-inline-start: 7px;
+  -webkit-padding-end: 7px;
+          padding-inline-end: 7px;
+}
+
+.charts-css.column.data-spacing-8 tbody tr {
+  -webkit-padding-start: 8px;
+          padding-inline-start: 8px;
+  -webkit-padding-end: 8px;
+          padding-inline-end: 8px;
+}
+
+.charts-css.column.data-spacing-9 tbody tr {
+  -webkit-padding-start: 9px;
+          padding-inline-start: 9px;
+  -webkit-padding-end: 9px;
+          padding-inline-end: 9px;
+}
+
+.charts-css.column.data-spacing-10 tbody tr {
+  -webkit-padding-start: 10px;
+          padding-inline-start: 10px;
+  -webkit-padding-end: 10px;
+          padding-inline-end: 10px;
+}
+
+.charts-css.column.data-spacing-11 tbody tr {
+  -webkit-padding-start: 11px;
+          padding-inline-start: 11px;
+  -webkit-padding-end: 11px;
+          padding-inline-end: 11px;
+}
+
+.charts-css.column.data-spacing-12 tbody tr {
+  -webkit-padding-start: 12px;
+          padding-inline-start: 12px;
+  -webkit-padding-end: 12px;
+          padding-inline-end: 12px;
+}
+
+.charts-css.column.data-spacing-13 tbody tr {
+  -webkit-padding-start: 13px;
+          padding-inline-start: 13px;
+  -webkit-padding-end: 13px;
+          padding-inline-end: 13px;
+}
+
+.charts-css.column.data-spacing-14 tbody tr {
+  -webkit-padding-start: 14px;
+          padding-inline-start: 14px;
+  -webkit-padding-end: 14px;
+          padding-inline-end: 14px;
+}
+
+.charts-css.column.data-spacing-15 tbody tr {
+  -webkit-padding-start: 15px;
+          padding-inline-start: 15px;
+  -webkit-padding-end: 15px;
+          padding-inline-end: 15px;
+}
+
+.charts-css.column.data-spacing-16 tbody tr {
+  -webkit-padding-start: 16px;
+          padding-inline-start: 16px;
+  -webkit-padding-end: 16px;
+          padding-inline-end: 16px;
+}
+
+.charts-css.column.data-spacing-17 tbody tr {
+  -webkit-padding-start: 17px;
+          padding-inline-start: 17px;
+  -webkit-padding-end: 17px;
+          padding-inline-end: 17px;
+}
+
+.charts-css.column.data-spacing-18 tbody tr {
+  -webkit-padding-start: 18px;
+          padding-inline-start: 18px;
+  -webkit-padding-end: 18px;
+          padding-inline-end: 18px;
+}
+
+.charts-css.column.data-spacing-19 tbody tr {
+  -webkit-padding-start: 19px;
+          padding-inline-start: 19px;
+  -webkit-padding-end: 19px;
+          padding-inline-end: 19px;
+}
+
+.charts-css.column.data-spacing-20 tbody tr {
+  -webkit-padding-start: 20px;
+          padding-inline-start: 20px;
+  -webkit-padding-end: 20px;
+          padding-inline-end: 20px;
+}
+
+.charts-css.column.datasets-spacing-1 tbody tr td {
+  -webkit-margin-start: 1px;
+          margin-inline-start: 1px;
+  -webkit-margin-end: 1px;
+          margin-inline-end: 1px;
+}
+
+.charts-css.column.datasets-spacing-2 tbody tr td {
+  -webkit-margin-start: 2px;
+          margin-inline-start: 2px;
+  -webkit-margin-end: 2px;
+          margin-inline-end: 2px;
+}
+
+.charts-css.column.datasets-spacing-3 tbody tr td {
+  -webkit-margin-start: 3px;
+          margin-inline-start: 3px;
+  -webkit-margin-end: 3px;
+          margin-inline-end: 3px;
+}
+
+.charts-css.column.datasets-spacing-4 tbody tr td {
+  -webkit-margin-start: 4px;
+          margin-inline-start: 4px;
+  -webkit-margin-end: 4px;
+          margin-inline-end: 4px;
+}
+
+.charts-css.column.datasets-spacing-5 tbody tr td {
+  -webkit-margin-start: 5px;
+          margin-inline-start: 5px;
+  -webkit-margin-end: 5px;
+          margin-inline-end: 5px;
+}
+
+.charts-css.column.datasets-spacing-6 tbody tr td {
+  -webkit-margin-start: 6px;
+          margin-inline-start: 6px;
+  -webkit-margin-end: 6px;
+          margin-inline-end: 6px;
+}
+
+.charts-css.column.datasets-spacing-7 tbody tr td {
+  -webkit-margin-start: 7px;
+          margin-inline-start: 7px;
+  -webkit-margin-end: 7px;
+          margin-inline-end: 7px;
+}
+
+.charts-css.column.datasets-spacing-8 tbody tr td {
+  -webkit-margin-start: 8px;
+          margin-inline-start: 8px;
+  -webkit-margin-end: 8px;
+          margin-inline-end: 8px;
+}
+
+.charts-css.column.datasets-spacing-9 tbody tr td {
+  -webkit-margin-start: 9px;
+          margin-inline-start: 9px;
+  -webkit-margin-end: 9px;
+          margin-inline-end: 9px;
+}
+
+.charts-css.column.datasets-spacing-10 tbody tr td {
+  -webkit-margin-start: 10px;
+          margin-inline-start: 10px;
+  -webkit-margin-end: 10px;
+          margin-inline-end: 10px;
+}
+
+.charts-css.column.datasets-spacing-11 tbody tr td {
+  -webkit-margin-start: 11px;
+          margin-inline-start: 11px;
+  -webkit-margin-end: 11px;
+          margin-inline-end: 11px;
+}
+
+.charts-css.column.datasets-spacing-12 tbody tr td {
+  -webkit-margin-start: 12px;
+          margin-inline-start: 12px;
+  -webkit-margin-end: 12px;
+          margin-inline-end: 12px;
+}
+
+.charts-css.column.datasets-spacing-13 tbody tr td {
+  -webkit-margin-start: 13px;
+          margin-inline-start: 13px;
+  -webkit-margin-end: 13px;
+          margin-inline-end: 13px;
+}
+
+.charts-css.column.datasets-spacing-14 tbody tr td {
+  -webkit-margin-start: 14px;
+          margin-inline-start: 14px;
+  -webkit-margin-end: 14px;
+          margin-inline-end: 14px;
+}
+
+.charts-css.column.datasets-spacing-15 tbody tr td {
+  -webkit-margin-start: 15px;
+          margin-inline-start: 15px;
+  -webkit-margin-end: 15px;
+          margin-inline-end: 15px;
+}
+
+.charts-css.column.datasets-spacing-16 tbody tr td {
+  -webkit-margin-start: 16px;
+          margin-inline-start: 16px;
+  -webkit-margin-end: 16px;
+          margin-inline-end: 16px;
+}
+
+.charts-css.column.datasets-spacing-17 tbody tr td {
+  -webkit-margin-start: 17px;
+          margin-inline-start: 17px;
+  -webkit-margin-end: 17px;
+          margin-inline-end: 17px;
+}
+
+.charts-css.column.datasets-spacing-18 tbody tr td {
+  -webkit-margin-start: 18px;
+          margin-inline-start: 18px;
+  -webkit-margin-end: 18px;
+          margin-inline-end: 18px;
+}
+
+.charts-css.column.datasets-spacing-19 tbody tr td {
+  -webkit-margin-start: 19px;
+          margin-inline-start: 19px;
+  -webkit-margin-end: 19px;
+          margin-inline-end: 19px;
+}
+
+.charts-css.column.datasets-spacing-20 tbody tr td {
+  -webkit-margin-start: 20px;
+          margin-inline-start: 20px;
+  -webkit-margin-end: 20px;
+          margin-inline-end: 20px;
+}
+
+/*
+ * Area Chart
+ */
+.charts-css.area tbody {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  width: 100%;
+  height: calc(100% - var(--heading-size));
+}
+
+.charts-css.area tbody tr {
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.charts-css.area tbody tr th {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.charts-css.area tbody tr td {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.charts-css.area tbody tr td::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.charts-css.area tbody tr td::after {
+  content: "";
+  width: 100%;
+}
+
+.charts-css.area:not(.reverse) tbody tr {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-margin-after: var(--labels-size);
+          margin-block-end: var(--labels-size);
+}
+
+.charts-css.area:not(.reverse) tbody tr th {
+  bottom: calc(-1 * var(--labels-size) - var(--primary-axis-width));
+  height: var(--labels-size);
+}
+
+.charts-css.area:not(.reverse) tbody tr td {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.charts-css.area.reverse tbody tr {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-margin-before: var(--labels-size);
+          margin-block-start: var(--labels-size);
+}
+
+.charts-css.area.reverse tbody tr th {
+  top: calc(-1 * var(--labels-size) - var(--primary-axis-width));
+  height: var(--labels-size);
+}
+
+.charts-css.area.reverse tbody tr td {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.charts-css.area:not(.reverse-data) tbody {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.charts-css.area.reverse-data tbody {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.charts-css.area:not(.reverse-datasets) tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.charts-css.area.reverse-datasets tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.charts-css.area:not(.reverse):not(.reverse-data) tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.charts-css.area:not(.reverse):not(.reverse-data) tbody tr td::before {
+  -webkit-clip-path: polygon(0% calc(100% * (1 - var(--start, var(--end, var(--size))))), 100% calc(100% * (1 - var(--end, var(--size)))), 100% 100%, 0% 100%);
+          clip-path: polygon(0% calc(100% * (1 - var(--start, var(--end, var(--size))))), 100% calc(100% * (1 - var(--end, var(--size)))), 100% 100%, 0% 100%);
+}
+
+.charts-css.area:not(.reverse):not(.reverse-data) tbody tr td .data {
+  -webkit-transform: translateX(50%);
+          transform: translateX(50%);
+}
+
+.charts-css.area:not(.reverse):not(.reverse-data) tbody tr td::after {
+  height: calc(100% * var(--end, var(--size)));
+}
+
+.charts-css.area:not(.reverse).reverse-data tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.charts-css.area:not(.reverse).reverse-data tbody tr td::before {
+  -webkit-clip-path: polygon(0% calc(100% * (1 - var(--end, var(--size)))), 100% calc(100% * (1 - var(--start, var(--end, var(--size))))), 100% 100%, 0% 100%);
+          clip-path: polygon(0% calc(100% * (1 - var(--end, var(--size)))), 100% calc(100% * (1 - var(--start, var(--end, var(--size))))), 100% 100%, 0% 100%);
+}
+
+.charts-css.area:not(.reverse).reverse-data tbody tr td .data {
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.charts-css.area:not(.reverse).reverse-data tbody tr td::after {
+  height: calc(100% * var(--end, var(--size)));
+}
+
+.charts-css.area.reverse:not(.reverse-data) tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.charts-css.area.reverse:not(.reverse-data) tbody tr td::before {
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% * var(--end, var(--size))), 0% calc(100% * var(--start, var(--end, var(--size)))));
+          clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% * var(--end, var(--size))), 0% calc(100% * var(--start, var(--end, var(--size)))));
+}
+
+.charts-css.area.reverse:not(.reverse-data) tbody tr td .data {
+  -webkit-transform: translateX(50%);
+          transform: translateX(50%);
+}
+
+.charts-css.area.reverse:not(.reverse-data) tbody tr td::after {
+  height: calc(100% * (1 -var(--end, var(--size))));
+}
+
+.charts-css.area.reverse.reverse-data tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.charts-css.area.reverse.reverse-data tbody tr td::before {
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% * var(--start, var(--end, var(--size)))), 0% calc(100% * var(--end, var(--size))));
+          clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% * var(--start, var(--end, var(--size)))), 0% calc(100% * var(--end, var(--size))));
+}
+
+.charts-css.area.reverse.reverse-data tbody tr td .data {
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.charts-css.area.reverse.reverse-data tbody tr td::after {
+  height: calc(100% * (1 - var(--end, var(--size))));
+}
+
+.charts-css.area.data-spacing-1 tbody tr td::before, .charts-css.area.datasets-spacing-1 tbody tr td::before {
+  -webkit-margin-start: 1px;
+          margin-inline-start: 1px;
+  -webkit-margin-end: 1px;
+          margin-inline-end: 1px;
+}
+
+.charts-css.area.data-spacing-2 tbody tr td::before, .charts-css.area.datasets-spacing-2 tbody tr td::before {
+  -webkit-margin-start: 2px;
+          margin-inline-start: 2px;
+  -webkit-margin-end: 2px;
+          margin-inline-end: 2px;
+}
+
+.charts-css.area.data-spacing-3 tbody tr td::before, .charts-css.area.datasets-spacing-3 tbody tr td::before {
+  -webkit-margin-start: 3px;
+          margin-inline-start: 3px;
+  -webkit-margin-end: 3px;
+          margin-inline-end: 3px;
+}
+
+.charts-css.area.data-spacing-4 tbody tr td::before, .charts-css.area.datasets-spacing-4 tbody tr td::before {
+  -webkit-margin-start: 4px;
+          margin-inline-start: 4px;
+  -webkit-margin-end: 4px;
+          margin-inline-end: 4px;
+}
+
+.charts-css.area.data-spacing-5 tbody tr td::before, .charts-css.area.datasets-spacing-5 tbody tr td::before {
+  -webkit-margin-start: 5px;
+          margin-inline-start: 5px;
+  -webkit-margin-end: 5px;
+          margin-inline-end: 5px;
+}
+
+.charts-css.area.data-spacing-6 tbody tr td::before, .charts-css.area.datasets-spacing-6 tbody tr td::before {
+  -webkit-margin-start: 6px;
+          margin-inline-start: 6px;
+  -webkit-margin-end: 6px;
+          margin-inline-end: 6px;
+}
+
+.charts-css.area.data-spacing-7 tbody tr td::before, .charts-css.area.datasets-spacing-7 tbody tr td::before {
+  -webkit-margin-start: 7px;
+          margin-inline-start: 7px;
+  -webkit-margin-end: 7px;
+          margin-inline-end: 7px;
+}
+
+.charts-css.area.data-spacing-8 tbody tr td::before, .charts-css.area.datasets-spacing-8 tbody tr td::before {
+  -webkit-margin-start: 8px;
+          margin-inline-start: 8px;
+  -webkit-margin-end: 8px;
+          margin-inline-end: 8px;
+}
+
+.charts-css.area.data-spacing-9 tbody tr td::before, .charts-css.area.datasets-spacing-9 tbody tr td::before {
+  -webkit-margin-start: 9px;
+          margin-inline-start: 9px;
+  -webkit-margin-end: 9px;
+          margin-inline-end: 9px;
+}
+
+.charts-css.area.data-spacing-10 tbody tr td::before, .charts-css.area.datasets-spacing-10 tbody tr td::before {
+  -webkit-margin-start: 10px;
+          margin-inline-start: 10px;
+  -webkit-margin-end: 10px;
+          margin-inline-end: 10px;
+}
+
+.charts-css.area.data-spacing-11 tbody tr td::before, .charts-css.area.datasets-spacing-11 tbody tr td::before {
+  -webkit-margin-start: 11px;
+          margin-inline-start: 11px;
+  -webkit-margin-end: 11px;
+          margin-inline-end: 11px;
+}
+
+.charts-css.area.data-spacing-12 tbody tr td::before, .charts-css.area.datasets-spacing-12 tbody tr td::before {
+  -webkit-margin-start: 12px;
+          margin-inline-start: 12px;
+  -webkit-margin-end: 12px;
+          margin-inline-end: 12px;
+}
+
+.charts-css.area.data-spacing-13 tbody tr td::before, .charts-css.area.datasets-spacing-13 tbody tr td::before {
+  -webkit-margin-start: 13px;
+          margin-inline-start: 13px;
+  -webkit-margin-end: 13px;
+          margin-inline-end: 13px;
+}
+
+.charts-css.area.data-spacing-14 tbody tr td::before, .charts-css.area.datasets-spacing-14 tbody tr td::before {
+  -webkit-margin-start: 14px;
+          margin-inline-start: 14px;
+  -webkit-margin-end: 14px;
+          margin-inline-end: 14px;
+}
+
+.charts-css.area.data-spacing-15 tbody tr td::before, .charts-css.area.datasets-spacing-15 tbody tr td::before {
+  -webkit-margin-start: 15px;
+          margin-inline-start: 15px;
+  -webkit-margin-end: 15px;
+          margin-inline-end: 15px;
+}
+
+.charts-css.area.data-spacing-16 tbody tr td::before, .charts-css.area.datasets-spacing-16 tbody tr td::before {
+  -webkit-margin-start: 16px;
+          margin-inline-start: 16px;
+  -webkit-margin-end: 16px;
+          margin-inline-end: 16px;
+}
+
+.charts-css.area.data-spacing-17 tbody tr td::before, .charts-css.area.datasets-spacing-17 tbody tr td::before {
+  -webkit-margin-start: 17px;
+          margin-inline-start: 17px;
+  -webkit-margin-end: 17px;
+          margin-inline-end: 17px;
+}
+
+.charts-css.area.data-spacing-18 tbody tr td::before, .charts-css.area.datasets-spacing-18 tbody tr td::before {
+  -webkit-margin-start: 18px;
+          margin-inline-start: 18px;
+  -webkit-margin-end: 18px;
+          margin-inline-end: 18px;
+}
+
+.charts-css.area.data-spacing-19 tbody tr td::before, .charts-css.area.datasets-spacing-19 tbody tr td::before {
+  -webkit-margin-start: 19px;
+          margin-inline-start: 19px;
+  -webkit-margin-end: 19px;
+          margin-inline-end: 19px;
+}
+
+.charts-css.area.data-spacing-20 tbody tr td::before, .charts-css.area.datasets-spacing-20 tbody tr td::before {
+  -webkit-margin-start: 20px;
+          margin-inline-start: 20px;
+  -webkit-margin-end: 20px;
+          margin-inline-end: 20px;
+}
+
+/*
+ * Line Chart
+ */
+.charts-css.line {
+  --line-size: 3px;
+}
+
+.charts-css.line tbody {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  width: 100%;
+  height: calc(100% - var(--heading-size));
+}
+
+.charts-css.line tbody tr {
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.charts-css.line tbody tr th {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.charts-css.line tbody tr td {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.charts-css.line tbody tr td::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.charts-css.line tbody tr td::after {
+  content: "";
+  width: 100%;
+}
+
+.charts-css.line:not(.reverse) tbody tr {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-margin-after: var(--labels-size);
+          margin-block-end: var(--labels-size);
+}
+
+.charts-css.line:not(.reverse) tbody tr th {
+  bottom: calc(-1 * var(--labels-size) - var(--primary-axis-width));
+  height: var(--labels-size);
+}
+
+.charts-css.line:not(.reverse) tbody tr td {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.charts-css.line.reverse tbody tr {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-margin-before: var(--labels-size);
+          margin-block-start: var(--labels-size);
+}
+
+.charts-css.line.reverse tbody tr th {
+  top: calc(-1 * var(--labels-size) - var(--primary-axis-width));
+  height: var(--labels-size);
+}
+
+.charts-css.line.reverse tbody tr td {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.charts-css.line:not(.reverse-data) tbody {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.charts-css.line.reverse-data tbody {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.charts-css.line:not(.reverse-datasets) tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.charts-css.line.reverse-datasets tbody tr {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.charts-css.line:not(.reverse):not(.reverse-data) tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.charts-css.line:not(.reverse):not(.reverse-data) tbody tr td::before {
+  -webkit-clip-path: polygon(0% calc(100% * (1 - var(--start, var(--end, var(--size))))), 100% calc(100% * (1 - var(--end, var(--size)))), 100% calc(100% * (1 - var(--end, var(--size))) - var(--line-size)), 0% calc(100% * (1 - var(--start, var(--end, var(--size)))) - var(--line-size)));
+          clip-path: polygon(0% calc(100% * (1 - var(--start, var(--end, var(--size))))), 100% calc(100% * (1 - var(--end, var(--size)))), 100% calc(100% * (1 - var(--end, var(--size))) - var(--line-size)), 0% calc(100% * (1 - var(--start, var(--end, var(--size)))) - var(--line-size)));
+}
+
+.charts-css.line:not(.reverse):not(.reverse-data) tbody tr td .data {
+  -webkit-transform: translateX(50%);
+          transform: translateX(50%);
+}
+
+.charts-css.line:not(.reverse):not(.reverse-data) tbody tr td::after {
+  height: calc(100% * var(--end, var(--size)));
+}
+
+.charts-css.line:not(.reverse).reverse-data tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.charts-css.line:not(.reverse).reverse-data tbody tr td::before {
+  -webkit-clip-path: polygon(0% calc(100% * (1 - var(--end, var(--size)))), 100% calc(100% * (1 - var(--start, var(--end, var(--size))))), 100% calc(100% * (1 - var(--start, var(--end, var(--size)))) - var(--line-size)), 0% calc(100% * (1 - var(--end, var(--size))) - var(--line-size)));
+          clip-path: polygon(0% calc(100% * (1 - var(--end, var(--size)))), 100% calc(100% * (1 - var(--start, var(--end, var(--size))))), 100% calc(100% * (1 - var(--start, var(--end, var(--size)))) - var(--line-size)), 0% calc(100% * (1 - var(--end, var(--size))) - var(--line-size)));
+}
+
+.charts-css.line:not(.reverse).reverse-data tbody tr td .data {
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.charts-css.line:not(.reverse).reverse-data tbody tr td::after {
+  height: calc(100% * var(--end, var(--size)));
+}
+
+.charts-css.line.reverse:not(.reverse-data) tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.charts-css.line.reverse:not(.reverse-data) tbody tr td::before {
+  -webkit-clip-path: polygon(0% calc(100% * var(--start, var(--end, var(--size))) - var(--line-size)), 100% calc(100% * var(--end, var(--size)) - var(--line-size)), 100% calc(100% * var(--end, var(--size))), 0% calc(100% * var(--start, var(--end, var(--size)))));
+          clip-path: polygon(0% calc(100% * var(--start, var(--end, var(--size))) - var(--line-size)), 100% calc(100% * var(--end, var(--size)) - var(--line-size)), 100% calc(100% * var(--end, var(--size))), 0% calc(100% * var(--start, var(--end, var(--size)))));
+}
+
+.charts-css.line.reverse:not(.reverse-data) tbody tr td .data {
+  -webkit-transform: translateX(50%);
+          transform: translateX(50%);
+}
+
+.charts-css.line.reverse:not(.reverse-data) tbody tr td::after {
+  height: calc(100% * (1 -var(--end, var(--size))));
+}
+
+.charts-css.line.reverse.reverse-data tbody tr td {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.charts-css.line.reverse.reverse-data tbody tr td::before {
+  -webkit-clip-path: polygon(0% calc(100% * var(--end, var(--size)) - var(--line-size)), 100% calc(100% * var(--start, var(--end, var(--size))) - var(--line-size)), 100% calc(100% * var(--start, var(--end, var(--size)))), 0% calc(100% * var(--end, var(--size))));
+          clip-path: polygon(0% calc(100% * var(--end, var(--size)) - var(--line-size)), 100% calc(100% * var(--start, var(--end, var(--size))) - var(--line-size)), 100% calc(100% * var(--start, var(--end, var(--size)))), 0% calc(100% * var(--end, var(--size))));
+}
+
+.charts-css.line.reverse.reverse-data tbody tr td .data {
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.charts-css.line.reverse.reverse-data tbody tr td::after {
+  height: calc(100% * (1 - var(--end, var(--size))));
+}
+
+.charts-css.line.data-spacing-1 tbody tr td::before, .charts-css.line.datasets-spacing-1 tbody tr td::before {
+  -webkit-margin-start: 1px;
+          margin-inline-start: 1px;
+  -webkit-margin-end: 1px;
+          margin-inline-end: 1px;
+}
+
+.charts-css.line.data-spacing-2 tbody tr td::before, .charts-css.line.datasets-spacing-2 tbody tr td::before {
+  -webkit-margin-start: 2px;
+          margin-inline-start: 2px;
+  -webkit-margin-end: 2px;
+          margin-inline-end: 2px;
+}
+
+.charts-css.line.data-spacing-3 tbody tr td::before, .charts-css.line.datasets-spacing-3 tbody tr td::before {
+  -webkit-margin-start: 3px;
+          margin-inline-start: 3px;
+  -webkit-margin-end: 3px;
+          margin-inline-end: 3px;
+}
+
+.charts-css.line.data-spacing-4 tbody tr td::before, .charts-css.line.datasets-spacing-4 tbody tr td::before {
+  -webkit-margin-start: 4px;
+          margin-inline-start: 4px;
+  -webkit-margin-end: 4px;
+          margin-inline-end: 4px;
+}
+
+.charts-css.line.data-spacing-5 tbody tr td::before, .charts-css.line.datasets-spacing-5 tbody tr td::before {
+  -webkit-margin-start: 5px;
+          margin-inline-start: 5px;
+  -webkit-margin-end: 5px;
+          margin-inline-end: 5px;
+}
+
+.charts-css.line.data-spacing-6 tbody tr td::before, .charts-css.line.datasets-spacing-6 tbody tr td::before {
+  -webkit-margin-start: 6px;
+          margin-inline-start: 6px;
+  -webkit-margin-end: 6px;
+          margin-inline-end: 6px;
+}
+
+.charts-css.line.data-spacing-7 tbody tr td::before, .charts-css.line.datasets-spacing-7 tbody tr td::before {
+  -webkit-margin-start: 7px;
+          margin-inline-start: 7px;
+  -webkit-margin-end: 7px;
+          margin-inline-end: 7px;
+}
+
+.charts-css.line.data-spacing-8 tbody tr td::before, .charts-css.line.datasets-spacing-8 tbody tr td::before {
+  -webkit-margin-start: 8px;
+          margin-inline-start: 8px;
+  -webkit-margin-end: 8px;
+          margin-inline-end: 8px;
+}
+
+.charts-css.line.data-spacing-9 tbody tr td::before, .charts-css.line.datasets-spacing-9 tbody tr td::before {
+  -webkit-margin-start: 9px;
+          margin-inline-start: 9px;
+  -webkit-margin-end: 9px;
+          margin-inline-end: 9px;
+}
+
+.charts-css.line.data-spacing-10 tbody tr td::before, .charts-css.line.datasets-spacing-10 tbody tr td::before {
+  -webkit-margin-start: 10px;
+          margin-inline-start: 10px;
+  -webkit-margin-end: 10px;
+          margin-inline-end: 10px;
+}
+
+.charts-css.line.data-spacing-11 tbody tr td::before, .charts-css.line.datasets-spacing-11 tbody tr td::before {
+  -webkit-margin-start: 11px;
+          margin-inline-start: 11px;
+  -webkit-margin-end: 11px;
+          margin-inline-end: 11px;
+}
+
+.charts-css.line.data-spacing-12 tbody tr td::before, .charts-css.line.datasets-spacing-12 tbody tr td::before {
+  -webkit-margin-start: 12px;
+          margin-inline-start: 12px;
+  -webkit-margin-end: 12px;
+          margin-inline-end: 12px;
+}
+
+.charts-css.line.data-spacing-13 tbody tr td::before, .charts-css.line.datasets-spacing-13 tbody tr td::before {
+  -webkit-margin-start: 13px;
+          margin-inline-start: 13px;
+  -webkit-margin-end: 13px;
+          margin-inline-end: 13px;
+}
+
+.charts-css.line.data-spacing-14 tbody tr td::before, .charts-css.line.datasets-spacing-14 tbody tr td::before {
+  -webkit-margin-start: 14px;
+          margin-inline-start: 14px;
+  -webkit-margin-end: 14px;
+          margin-inline-end: 14px;
+}
+
+.charts-css.line.data-spacing-15 tbody tr td::before, .charts-css.line.datasets-spacing-15 tbody tr td::before {
+  -webkit-margin-start: 15px;
+          margin-inline-start: 15px;
+  -webkit-margin-end: 15px;
+          margin-inline-end: 15px;
+}
+
+.charts-css.line.data-spacing-16 tbody tr td::before, .charts-css.line.datasets-spacing-16 tbody tr td::before {
+  -webkit-margin-start: 16px;
+          margin-inline-start: 16px;
+  -webkit-margin-end: 16px;
+          margin-inline-end: 16px;
+}
+
+.charts-css.line.data-spacing-17 tbody tr td::before, .charts-css.line.datasets-spacing-17 tbody tr td::before {
+  -webkit-margin-start: 17px;
+          margin-inline-start: 17px;
+  -webkit-margin-end: 17px;
+          margin-inline-end: 17px;
+}
+
+.charts-css.line.data-spacing-18 tbody tr td::before, .charts-css.line.datasets-spacing-18 tbody tr td::before {
+  -webkit-margin-start: 18px;
+          margin-inline-start: 18px;
+  -webkit-margin-end: 18px;
+          margin-inline-end: 18px;
+}
+
+.charts-css.line.data-spacing-19 tbody tr td::before, .charts-css.line.datasets-spacing-19 tbody tr td::before {
+  -webkit-margin-start: 19px;
+          margin-inline-start: 19px;
+  -webkit-margin-end: 19px;
+          margin-inline-end: 19px;
+}
+
+.charts-css.line.data-spacing-20 tbody tr td::before, .charts-css.line.datasets-spacing-20 tbody tr td::before {
+  -webkit-margin-start: 20px;
+          margin-inline-start: 20px;
+  -webkit-margin-end: 20px;
+          margin-inline-end: 20px;
+}
+
+/*
+ * Radial Chart
+ */
+.charts-css.radial tbody {
+  display: block;
+  width: 100%;
+  height: 0;
+  -webkit-padding-after: 100%;
+          padding-block-end: 100%;
+  border-radius: 50%;
+  background-color: var(--chart-bg-color);
+}
+
+.charts-css.radial tbody tr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/*
+ * Pie Chart
+ */
+.charts-css.pie tbody {
+  display: block;
+  width: 100%;
+  height: 0;
+  -webkit-padding-after: 100%;
+          padding-block-end: 100%;
+  border-radius: 50%;
+  background-color: var(--chart-bg-color);
+}
+
+.charts-css.pie tbody tr th {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.charts-css.pie tbody tr td {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(transparent 0 calc( 1turn * var( --start )), var(--c, transparent) calc( 1turn * var( --start, 0 )) calc( 1turn * var( --end )), transparent calc( 1turn * var( --end )) 1turn);
+}
+
+.charts-css.pie tbody tr td::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.charts-css.pie tbody tr td::after {
+  content: "";
+  width: 100%;
+}
+
+.charts-css.pie tbody tr td .data {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: rotate(calc( 0.5turn * var( --start, 0 ) + 0.5turn * var( --end, 0 )));
+          transform: rotate(calc( 0.5turn * var( --start, 0 ) + 0.5turn * var( --end, 0 )));
+}
+
+/*
+ * Polar Chart
+ */
+.charts-css.polar tbody {
+  display: block;
+  width: 100%;
+  height: 0;
+  -webkit-padding-after: 100%;
+          padding-block-end: 100%;
+  border-radius: 50%;
+  background-color: var(--chart-bg-color);
+}
+
+.charts-css.polar tbody tr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/*
+ * Radar Chart
+ */
+.charts-css.radar tbody {
+  display: block;
+  width: 100%;
+  height: 0;
+  -webkit-padding-after: 100%;
+          padding-block-end: 100%;
+  border-radius: 50%;
+  background-color: var(--chart-bg-color);
+}
+
+.charts-css.radar tbody tr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  white-space: nowrap;
+}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9jaGFydHMuc2NzcyIsImNoYXJ0cy5jc3MiLCIuLi9zcmMvZ2VuZXJhbC9fdmFyaWFibGVzLnNjc3MiLCIuLi9zcmMvY29tcG9uZW50cy9fd3JhcHBlci5zY3NzIiwiLi4vc3JjL2dlbmVyYWwvX3Byb3BlcnRpZXMuc2NzcyIsIi4uL3NyYy9nZW5lcmFsL19taXhpbnMuc2NzcyIsIi4uL3NyYy9jb21wb25lbnRzL19oZWFkaW5nLnNjc3MiLCIuLi9zcmMvY29tcG9uZW50cy9fY29sb3JzLnNjc3MiLCIuLi9zcmMvY29tcG9uZW50cy9fZGF0YS5zY3NzIiwiLi4vc3JjL2NvbXBvbmVudHMvX2xhYmVscy5zY3NzIiwiLi4vc3JjL2NvbXBvbmVudHMvX2F4ZXMuc2NzcyIsIi4uL3NyYy9jb21wb25lbnRzL19sZWdlbmQuc2NzcyIsIi4uL3NyYy9jb21wb25lbnRzL190b29sdGlwcy5zY3NzIiwiLi4vc3JjL2NoYXJ0cy9fYmFyLnNjc3MiLCIuLi9zcmMvY2hhcnRzL19jb2x1bW4uc2NzcyIsIi4uL3NyYy9jaGFydHMvX2FyZWEuc2NzcyIsIi4uL3NyYy9jaGFydHMvX2xpbmUuc2NzcyIsIi4uL3NyYy9jaGFydHMvX3JhZGlhbC5zY3NzIiwiLi4vc3JjL2NoYXJ0cy9fcGllLnNjc3MiLCIuLi9zcmMvY2hhcnRzL19wb2xhci5zY3NzIiwiLi4vc3JjL2NoYXJ0cy9fcmFkYXIuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7OztFQ0lFO0FDWUY7RUFJSSxrQ0FBc0I7RUFBdEIsbUNBQXNCO0VBQXRCLG1DQUFzQjtFQUF0QixtQ0FBc0I7RUFBdEIsbUNBQXNCO0VBQXRCLG1DQUFzQjtFQUF0QixvQ0FBc0I7RUFBdEIsb0NBQXNCO0VBQXRCLG9DQUFzQjtFQUF0QixtQ0FBc0I7RUFJeEIseUJBQWlCO0VBR2pCLG1CQUFlO0VBR2Ysc0NBQXFCO0VBQ3JCLDJCQUFxQjtFQUNyQix5QkFBcUI7RUFDckIsMENBQXVCO0VBQ3ZCLDZCQUF1QjtF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 */

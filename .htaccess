@@ -1,0 +1,37 @@
+Options +FollowSymlinks
+Options -Indexes
+RewriteEngine on
+
+RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
+RewriteCond %{QUERY_STRING} ^(.*)(%3C|<)/?script(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)(%3D|=)?javascript(%3A|:)(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)document\.location\.href(.*)$ [OR]
+RewriteCond %{QUERY_STRING} ^(.*)GLOBALS(=|[|%[0-9A-Z]{0,2})(.*)$ [OR]
+RewriteCond %{QUERY_STRING} ^(.*)_REQUEST(=|[|%[0-9A-Z]{0,2})(.*)$ [OR]
+RewriteCond %{QUERY_STRING} ^(.*)(SELECT|INSERT|DROP|DELETE|OR|CHAR\(|UPDATE|REPLACE|LIMIT)(.*)$
+RewriteRule (.*) – [F]
+
+###### Turn on Expires and set default to 0
+ExpiresActive On
+ExpiresDefault A0
+ 
+###### Set up caching on media files for 1 week
+<filesMatch "\.(flv|ico|pdf|avi|mov|ppt|doc|mp3|wmv|wav|gif|jpg|jpeg|png|swf|xml|txt|html|js|css)$">
+ExpiresDefault A604800
+Header append Cache-Control "public"
+</filesMatch>
+ 
+###### Force no caching for dynamic files
+<filesMatch "\.(php|cgi|pl|htm)$">
+ExpiresActive Off
+Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+Header set Pragma "no-cache"
+</filesMatch>
+
+<IfModule mod_deflate.c>
+<FilesMatch "\.(html|php|txt|xml|js|css)$">
+SetOutputFilter DEFLATE
+</FilesMatch>
+</IfModule>
+
+AddDefaultCharset UTF-8

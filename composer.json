@@ -1,0 +1,16 @@
+{
+    "authors": [
+        {
+            "name": "Alexandre Lefebvre",
+            "email": "quartzcms@gmail.com",
+            "homepage": "https://www.quartzcms.ca",
+            "role": "Developer"
+        }
+    ],
+    
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.8",
+        "naneau/php-obfuscator": "0.0.5",
+        "phpmailer/phpmailer": "^6.6"
+    }
+}
