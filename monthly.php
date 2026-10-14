@@ -70,9 +70,9 @@
 										$x = range(0, 23);
 										$y = range(0, 59);
 										foreach ($x as $key => $value){
-											foreach ($y as $key2 => $value2){
+											foreach ($y as $minute_index => $minute_value){
 												$hour = sprintf("%02d", $value);
-												$minute = sprintf("%02d", $value2);
+												$minute = sprintf("%02d", $minute_value);
 												$data[$hour.$minute.'00'] = 0;
 												$count[$hour.$minute.'00'] = 0;
 											}

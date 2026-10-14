@@ -17,16 +17,16 @@ $table = array();
 
 $j = 0;
 foreach ($worksheet->getRowIterator() as $row) {
-	$cellIterator = $row->getCellIterator();
-	$cellIterator->setIterateOnlyExistingCells(FALSE);
+	$cell_iterator = $row->getCellIterator();
+	$cell_iterator->setIterateOnlyExistingCells(FALSE);
 	$i = 0;
 	if($j > 0){
-		foreach ($cellIterator as $cell) {
+		foreach ($cell_iterator as $cell) {
 			if($i == 0){
 				$date = new DateTime($cell->getValue());
-				$stringDate = $date->getTimestamp();
-				$file = "_".date("Y-m-d", $stringDate).'_data_btc.txt';
-				$current_time = date("His", $stringDate);
+				$string_date = $date->getTimestamp();
+				$file = "_".date("Y-m-d", $string_date).'_data_btc.txt';
+				$current_time = date("His", $string_date);
 				$table[$j][$i] = $current_time;
 				$i++;
 				$table[$j][$i] = $file;

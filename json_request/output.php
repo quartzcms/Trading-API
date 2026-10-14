@@ -20,21 +20,6 @@ include('../sessions/save_sessions.php');
 include('../sessions/use_sessions.php');
 $default_timezone = 'America/New_York';
 
-function dirToArray($dir) {
-   $result = array();
-   $cdir = scandir($dir);
-   foreach ($cdir as $key => $value){
-	  if (!in_array($value,array(".",".."))){
-		 if (is_dir($dir . DIRECTORY_SEPARATOR . $value)){
-			$result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
-		 }else{
-			$result[] = $value;
-		 }
-	  }
-   }
-   return $result;
-}
-
 function increase_risk($connect, $crypto, $folder, $date_object){
 	$date_addition = $date_object->add(new DateInterval('PT1M'));
 	$current_date = $date_addition->format('Hi');

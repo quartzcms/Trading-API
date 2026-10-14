@@ -32,63 +32,66 @@
 		<link rel="stylesheet" href="includes/anychart/node_modules/anychart/dist/css/anychart-ui.min.css" />
 		<link rel="stylesheet" href="includes/anychart/node_modules/anychart/dist/fonts/css/anychart-font.min.css" />
 		<script type="text/javascript">
-			var chart;
 			anychart.onDocumentReady(function () {
-				var chart = anychart.stock();
-				
-				var dataPoints = [];
+				var stockChart = anychart.stock();
+				var priceData = [];
 				var dataTable = anychart.data.table();
 
-				$.getJSON("includes/chart_data.php", function(data) {  
-					for(var i = 0; i < data.length; i++){
-						dataPoints.push([String(data[i].date), Number(data[i].open), Number(data[i].close), Number(data[i].high), Number(data[i].low)]);
+				$.getJSON("includes/chart_data.php", function (chartData) {
+					for (var index = 0; index < chartData.length; index++) {
+						var point = chartData[index];
+						priceData.push([
+							String(point.date),
+							Number(point.open),
+							Number(point.close),
+							Number(point.high),
+							Number(point.low)
+						]);
 					}
-					
-					dataTable.addData(dataPoints);
+
+					dataTable.addData(priceData);
 
 					var mapping = dataTable.mapAs();
 					mapping.addField('open', 1);
 					mapping.addField('close', 2);
 					mapping.addField('high', 3);
 					mapping.addField('low', 4);
-					
-					var grouping = chart.grouping();
 
-					// set the levels of grouping
-					grouping.levels([
+					stockChart.grouping().levels([
 						{unit: 'minute', count: 1}
 					]);
 
-					// create a plot and an two column series
-					chart.plot(0).ohlc(mapping).name('<?php echo $symbol[0]; ?>');
-					
+					stockChart.plot(0).ohlc(mapping).name('<?php echo $symbol[0]; ?>');
+
 					var selectable = mapping.createSelectable();
-					selectable.select('2020-01-01', parseInt(new Date().getFullYear() + 1) + '-01' + '-01');
-					
-					chart.background().fill("rgba(0,0,0, 0.2)");
-					chart.title('<?php echo $symbol[0]; ?> PRICE');
-					chart.container('containerChart');
-					chart.draw();
+					var endYear = new Date().getFullYear() + 1;
+					selectable.select('2020-01-01', endYear + '-01-01');
+
+					stockChart.background().fill("rgba(0,0,0, 0.2)");
+					stockChart.title('<?php echo $symbol[0]; ?> PRICE');
+					stockChart.container('containerChart');
+					stockChart.draw();
 				});
-				
-				var chart2 = anychart.line();
-				var dataPoints3 = [];
-				var dataPoints2 = [];
-				
-				$.getJSON("includes/account_data.php", function(data) {  
-					for(var i = 0; i < data.length; i++){
-						dataPoints3.push([String(data[i].date), Number(data[i].today)]);
-						dataPoints2.push([String(data[i].date), Number(data[i].account)]);
+
+				var incomeChart = anychart.line();
+
+				$.getJSON("includes/account_data.php", function (accountData) {
+					var dailyIncomePoints = [];
+					var accountIncomePoints = [];
+
+					for (var index = 0; index < accountData.length; index++) {
+						var point = accountData[index];
+						dailyIncomePoints.push([String(point.date), Number(point.today)]);
+						accountIncomePoints.push([String(point.date), Number(point.account)]);
 					}
 
-					// create a plot and an two column series
-					chart2.title('KRAKEN INCOME');
-					chart2.line(dataPoints3).name('Today\'s income');
-					chart2.line(dataPoints2).name('Absolute income');
-					chart2.background().fill("rgba(0,0,0, 0.2)");
-					chart2.container('containerAccount');
-					chart2.draw();
-				});							
+					incomeChart.title('KRAKEN INCOME');
+					incomeChart.line(dailyIncomePoints).name('Today\'s income');
+					incomeChart.line(accountIncomePoints).name('Absolute income');
+					incomeChart.background().fill("rgba(0,0,0, 0.2)");
+					incomeChart.container('containerAccount');
+					incomeChart.draw();
+				});
 			});
 		</script>
 		<script src="assets/iframeResizer.contentWindow.min.js"></script>
@@ -136,20 +139,16 @@
 						<?php
 							$coin_array = use_session($_SESSION['user_in'].'.txt'.'_coin_array');
 							$price_array_list = use_session($_SESSION['user_in'].'.txt'.'_price_array_list');
-							if(!empty($coin_array) && !empty($price_array_list)){
-								foreach($coin_array as $key => $value){
-									if(isset($price_array_list[$coin_array[$key]['name']])){
-										$actual_price = $price_array_list[$coin_array[$key]['name']];
-										$decimal = explode('.', $actual_price);
-										$rounded_price = (strval($actual_price) < '0') ? round($actual_price, intval(strlen($decimal[1]) - 1)) : round($actual_price, -(intval(strlen($decimal[0])) - 1));
+							$portfolio_progress = (!empty($coin_array) && !empty($price_array_list))
+								? \Core\Market\PortfolioProgressService::build($coin_array, $price_array_list)
+								: array();
+							foreach ($portfolio_progress as $coin_progress) {
 						?>
-									<h3><?php echo $coin_array[$key]['name']; ?></h3>
+									<h3><?php echo $coin_progress['name']; ?></h3>
 									<div class="progress" style="height: 60px; background-color: #444444; border-radius: 0px;">
-									<div id="<?php echo $coin_array[$key]['name']; ?>" class="progress-bar " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="min-width: 150px; padding-left: 10px; padding-top: 10px; text-transform: uppercase; text-align:left; width: <?php echo (strval($rounded_price) > '0') ? (($coin_array[$key]['value']) / $rounded_price) : (($coin_array[$key]['value']) / 1); ?>%"><?php echo "Current : ".number_format(($coin_array[$key]['value'] * $price_array_list[$coin_array[$key]['name']]), 2, '.', ''); echo "<br />Rounded Price: ".$rounded_price; ?></div>
+									<div id="<?php echo $coin_progress['name']; ?>" class="progress-bar " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="min-width: 150px; padding-left: 10px; padding-top: 10px; text-transform: uppercase; text-align:left; width: <?php echo $coin_progress['width']; ?>%"><?php echo "Current : ".$coin_progress['current_value']; echo "<br />Rounded Price: ".$coin_progress['rounded_price']; ?></div>
 									</div>
 						<?php
-									}
-								}
 							}
 						?>
 					</div>

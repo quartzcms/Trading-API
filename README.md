@@ -13,19 +13,18 @@
 	<li>many features to set for the automated bot including: operating time, percentage level, gained limit, etc..</li>
 </ul>
 
-<p>To install the application, you will need to set a cron task on the A.I. file and the output file. Here are the lines you will need to add to the cron file:</p>
+<p>To run the automated market-data update and trading tasks, schedule the PHP entry-point wrappers in <code>json_request</code>. These wrappers load the application bootstrap and configuration, then delegate the work to services in <code>core/</code>; do not schedule the core service class files directly. Run the commands from <code>json_request</code> because the wrappers and the AI shell script use paths relative to that directory.</p>
 
 <pre>* * * * * cd /var/www/example.com/public_html/json_request &amp;&amp; sudo -u www-data php output_process.php
 * * * * * cd /var/www/example.com/public_html/json_request &amp;&amp; sudo bash output_ai.sh</pre>
 
-<p>You may replace the /var/www/example.com/public_html path with your document_root path in the above command and within the config.php file. Additional information about the license key for Alpha-Vantage can be found in the config.php file. You may also set a login and password to access the dashboard within the config.php file.</p>
+<p>Replace <code>/var/www/example.com/public_html</code> with your application document root in both commands and in <code>config.php</code>. The market-data wrapper is <code>json_request/output_process.php</code> and delegates to <code>Core\Market\MarketDataUpdateService</code>. The AI shell script repeatedly runs <code>json_request/output_ai.php</code>, which delegates to <code>Core\Trading\AiTradingService</code>. Additional information about the Alpha-Vantage license key, and the dashboard login and password, can be set in <code>config.php</code>.</p>
+
+<p>Session data is stored in the project-root <code>sessions/data</code> directory. Keep the existing session data folders there when deploying; the application reads and writes this location independently of the current working directory.</p>
 
 <p>Bcause the script uses intensive file edits, you will have to set output_buffering to -1 in the PHP settings. Make sure you also always run the script with an SSL for protection and chmod files to make them writable.</p>
 
-<p>In the /json_request folder you will find the output_ai.sh which contains www-data user. If your apache user is different than www-data, you will need to set this one in the output_ai.sh (which execute 1 call each second) and for the cron task above here:</p>
-
-<pre>* * * * * cd /var/www/example.com/public_html/json_request &amp;&amp; sudo -u <span style="background-color:#ffff00">www-data</span> php output_process.php
-* * * * * cd /var/www/example.com/public_html/json_request &amp;&amp; sudo bash output_ai.sh</pre>
+<p><code>output_ai.sh</code> runs the AI wrapper once per second for about one minute. If your web-server account is not <code>www-data</code>, change the user in <code>json_request/output_ai.sh</code> and in the <code>sudo -u</code> portion of the market-data cron command to the account that owns the application files.</p>
 
 <p>---------------------</p>
 

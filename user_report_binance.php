@@ -33,226 +33,19 @@
 					<div class="col-md-12">
 						<h4 align="center" style="text-transform: uppercase; margin-top: 20px;" class="text-success">BINANCE USER REPORT</h4>
 						<?php
-						if(isset($_SESSION['user_in']) && use_session('config_'.$_SESSION['user_in'].'.txt'.'_api_key') != ''){						
-							function get_total($file, $total_money_withdrew, $total_money_deposited, $filename){
-								if(file_exists('config/logs/'.$_SESSION['user_in'].'/'.$file)){
-									$get_total = file_get_contents('config/logs/'.$_SESSION['user_in'].'/'.$file);
-									if(!empty($get_total)){
-										$lines = explode("\n", $get_total);
-										$first_key = 0;
-										$last_key = count($lines) - 1;
-										foreach($lines as $key => $line){
-											if(strpos($lines[$key], 'experimental feature') === false){
-												$first_key = $key;
-												break;
-											}
-										}
-										
-										for($i = (((count($lines) - 1) > -1) ? (count($lines) - 1) : 0); $i > -1; $i--){
-											if(isset($lines[$i]) && !empty($lines[$i]) && strpos($lines[$i], 'experimental feature') === false && 
-											strpos($lines[$i], '00:00:') !== false) {
-												$last_key = $i;
-												break;
-											} else if (isset($lines[$i]) && !empty($lines[$i]) && strpos($lines[$i], 'experimental feature') === false) {
-												$last_key = $i;
-												break;
-											}
-										}
-										
-										$first = explode('=', $lines[$first_key]);
-										$first = explode('|',$first[1]);
-										$first = explode('/',$first[4]);
-										$last = explode('=', $lines[$last_key]);
-										$last = explode('|',$last[1]);
-										$last = explode('/',$last[4]);
-										
-										$get_total = floatval($last[1]) - floatval($first[1]);
-										$get_total_difference = 0;
-										$filename = str_replace('-', '', $filename);
-										
-										foreach($total_money_withdrew as $key => $value){
-											$parts = explode(':', $value);
-											$parts_date = explode('-', $parts[0]);
-											if(isset($parts_date[2]) && strlen($parts_date[2]) == 4){
-												$parts[0] = $parts_date[2].'-'.$parts_date[1].'-'.$parts_date[0];
-											}
-											$parts[0] = str_replace('-', '', $parts[0]);
-											if(intval($parts[0]) == intval($filename)) {
-												$get_total_difference = $get_total_difference - floatval($parts[1]);
-											}
-										}
-										
-										foreach($total_money_deposited as $key => $value){
-											$parts = explode(':', $value);
-											$parts_date = explode('-', $parts[0]);
-											if(isset($parts_date[2]) && strlen($parts_date[2]) == 4){
-												$parts[0] = $parts_date[2].'-'.$parts_date[1].'-'.$parts_date[0];
-											}
-											$parts[0] = str_replace('-', '', $parts[0]);
-											if(intval($parts[0]) == intval($filename)) {
-												$get_total_difference = $get_total_difference + floatval($parts[1]);
-											}
-										}
-										
-										$get_total =  number_format($get_total, 3, '.', '');
-										return array($get_total, $last[1], $get_total_difference);
-									}
-								}
-								return array(0, 0, 0);
-							}
-							
-							function get_transactions($file){
-								$count = 0;
-								$gain = 0;
-								$loss = 0;
-								if(file_exists('config/logs/'.$_SESSION['user_in'].'/'.$file)){
-									$get_transaction = file_get_contents('config/logs/'.$_SESSION['user_in'].'/'.$file);
-									if(!empty($get_transaction)){
-										$lines = explode("\n", $get_transaction);
-										$already_picked = array();
-										foreach($lines as $key => $value){
-											if(strpos($value, "\"orderId\"") !== false){
-												$count++;
-											}
-											if(strpos($value, "This transaction is related to the experimental feature.") !== false){
-												$string = explode("=", $value);
-												$string = explode("|", $string[1]);
-												if(!in_array($string[0], $already_picked)){
-													$already_picked[] = $string[0];
-													$array_convert = json_decode($string[0], true);
-													if(isset($array_convert['result'])){
-														$count++;
-														$total_transaction = explode(':', $array_convert['result']);
-														$total_transaction = str_replace(' ', '', $total_transaction[1]);
-														$total_transaction = str_replace('+', '', $total_transaction);
-														$total_transaction = floatval($total_transaction);
-														
-														if(strval($total_transaction) > '0'){
-															$gain = $gain + $total_transaction;
-														} else {
-															$loss = $loss + $total_transaction;
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-								return array($count, $gain, $loss);
-							}
-							
-							function get_highest($file){
-								if(file_exists('config/logs/'.$_SESSION['user_in'].'/'.$file)){
-									$get_highest = file_get_contents('config/logs/'.$_SESSION['user_in'].'/'.$file);
-									$lines = explode("\n", $get_highest);
-									$highest = 0;
-									
-									foreach($lines as $key => $value){
-										if(!empty($value)){
-											$first_part = explode('=', $lines[$key]);
-											if(isset($first_part[0])){
-												$first_part = explode(' ', $first_part[0]);
-												if(isset($first_part[2])){
-													$first_part = explode('*', $first_part[2]);
-
-													if($key == 0){
-														$highest = $first_part[1];
-													} else {
-														if(isset($first_part[1]) && strval($first_part[1]) > strval($highest)){
-															$highest = $first_part[1];
-														}
-													}
-												}
-											}
-										}
-									}
-									return $highest;
-								}
-								return 0;
-							}
-							
-							function get_lowest($file){
-								if(file_exists('config/logs/'.$_SESSION['user_in'].'/'.$file)){	
-									$get_lowest = file_get_contents('config/logs/'.$_SESSION['user_in'].'/'.$file);
-									$lines = explode("\n", $get_lowest);
-									$lowest = 0;
-									
-									foreach($lines as $key => $value){
-										if(!empty($value)){
-											$first_part = explode('=', $lines[$key]);
-											if(isset($first_part[0])){
-												$first_part = explode(' ', $first_part[0]);
-												if(isset($first_part[2])){
-													$first_part = explode('*', $first_part[2]);
-													
-													if($key == 0){
-														$lowest = $first_part[1];
-													} else {
-														if(isset($first_part[1]) && strval($first_part[1]) < strval($lowest)){
-															$lowest = $first_part[1];
-														}
-													}
-												}
-											}
-										}
-									}
-									return $lowest;
-								}
-								return 0;
-							}
-							
-							if(!isset($_GET['day'])){
-								$current_date = date('Y-m-d');
-							} else {
-								$current_date = $_GET['day'];
-							}
-							
-							$total_money_withdrew = use_session('config_'.$_SESSION['user_in'].'.txt'.'_total_money_withdrew');
-							$total_money_deposited = use_session('config_'.$_SESSION['user_in'].'.txt'.'_total_money_deposited');
-							
-							$total_money_withdrew = explode(',', $total_money_withdrew);
-							$total_money_deposited = explode(',', $total_money_deposited);
-							
-							$today_money = get_total($current_date.'_'.$_SESSION['user_in'].'.txt', $total_money_withdrew, $total_money_deposited, $current_date);
-							$transactions = get_transactions($current_date.'_'.$_SESSION['user_in'].'.txt');
-							
-							$array_money_today = array();
-							$files = dirToArray('config/logs/'.$_SESSION['user_in']);
-							foreach($files as $key => $file){
-								$filename = explode('_', $file);
-								$filename2 = str_replace('-', '', $filename[0]);
-								$filename = intval($filename2);
-								$filename_today = str_replace('-', '', $current_date);
-								$filename_today = intval($filename_today);
-								if($filename <= $filename_today){
-									if(strpos($file, $_SESSION['user_in']) !== false){
-										$get_total = get_total($file, $total_money_withdrew, $total_money_deposited, $filename2);
-										$array_money_today[] = array('amount' => floatval($get_total[0]), 'deposit_withdraw' => floatval($get_total[2]));
-									}
-								}
-							}
-							
-							$total_money_logs = 0;
-							$total_deposit_withdraw = 0;
-							foreach($array_money_today as $key => $value){
-								$total_money_logs = floatval($total_money_logs) + floatval($value['amount']);
-								$total_deposit_withdraw = floatval($total_deposit_withdraw) + floatval($value['deposit_withdraw']);
-							}
-							
-							$difference = (-(floatval(use_session('config_'.$_SESSION['user_in'].'.txt'.'_total_money'))) - $total_deposit_withdraw) + $total_money_logs;
-							$difference = number_format($difference, 2, '.', '');
-							
-							$total_money_logs = $total_money_logs - ($total_deposit_withdraw);
-							$total_money_logs = number_format($total_money_logs, 2, '.', '');
-							
-							$today_money[0] = $today_money[0] - $today_money[2];
-							$today_money[0] = number_format($today_money[0], 2, '.', '');
-							
-							$median_money = number_format(($total_money_logs / count($files)), 2, '.', '');
-							
-							$percent = ($today_money[1] > 0) ? number_format((floatval($today_money[0]) / floatval($today_money[1])) * 100, 2, '.', '') : 0;
-							$highest = get_highest($current_date.'_'.$_SESSION['user_in'].'.txt');
-							$lowest = get_lowest($current_date.'_'.$_SESSION['user_in'].'.txt');
+						if(isset($_SESSION['user_in']) && use_session('config_'.$_SESSION['user_in'].'.txt'.'_api_key') != ''){
+							$current_date = isset($_GET['day']) ? $_GET['day'] : date('Y-m-d');
+							$report_data = \Core\Reports\ReportPageService::buildDashboard($_SESSION['user_in'], $current_date, 'orderId');
+							$today_money = $report_data['today_money'];
+							$transactions = $report_data['transactions'];
+							$difference = $report_data['difference'];
+							$total_money_logs = $report_data['total_money_logs'];
+							$median_money = $report_data['median_money'];
+							$percent = $report_data['percent'];
+							$highest = $report_data['highest'];
+							$lowest = $report_data['lowest'];
+							$files = $report_data['files'];
+							$report_days = $report_data['days'];
 						?>
 							<div style="text-align: center" class="main">
 								<h3 class="item_dashboard text-warning price" data-container="body" data-toggle="popover" data-placement="bottom" data-content="The price returned each amount of second before refreshing."></h3>
@@ -320,18 +113,15 @@
 								<div style="text-transform: uppercase; margin: 5px 5px; text-align: center;" class="transaction_anchors"></div>							
 							</div>
 							<div class="days history-hide" style="overflow: hidden;">
-								<?php $files = dirToArray('config/logs/'.$_SESSION['user_in']); ?>
 								<div align="center" class="day-container" style="margin: 0px 0px; width: 100%; overflow-x: scroll; white-space: nowrap; padding: 10px 0px;">
 									<?php
 										$i = 0;
-										foreach($files as $key => $file){
-											if(isset($_SESSION['user_in']) && strpos($file, $_SESSION['user_in']) !== false){
-												$day = substr($file, 0, 10);
-												?>
-													<button class="day btn <?php if($current_date == $day){ ?>btn-success<?php } else { ?>btn-primary<?php } ?>" day="<?php echo $day ?>" id="<?php echo $day ?>" position="<?php echo ($i * 76.95) ?>"><?php echo $day ?></button>
-												<?php
-												$i++;
-											}
+										foreach($report_days as $file){
+											$day = substr($file, 0, 10);
+											?>
+												<button class="day btn <?php if($current_date == $day){ ?>btn-success<?php } else { ?>btn-primary<?php } ?>" day="<?php echo $day ?>" id="<?php echo $day ?>" position="<?php echo ($i * 76.95) ?>"><?php echo $day ?></button>
+											<?php
+											$i++;
 										}
 									?>
 								</div>
@@ -342,54 +132,25 @@
 						<table class="table report_table" cellpadding="10">
 						<tbody>
 						<?php
-							function convert_array($json_data) {
-								$merge_key_values = array();
-								foreach($json_data as $key => $value){
-									if(!empty($value)){
-										if(isset($json_data[$key]) && !is_array($value)){
-											$merge_key_values[] = $key.':'.$value;
-										} else {
-											$merge_key_values[] = convert_array($value);
-										}
-									}
-								} 
-								return implode(', ', $merge_key_values);
-							}
-						
-							$path = 'config/logs/'.$_SESSION['user_in'].'/'.$current_date.'_'.$_SESSION['user_in'].'.txt';
-							if(file_exists($path)){						
-								$file_content = file_get_contents($path);
-								$lines = explode("\n", $file_content);
-								arsort($lines);
-								$i = 0;
-								$transaction_count = 0;
-								$hide_reveal = use_session('config_'.$_SESSION['user_in'].'.txt_hide');
-								foreach($lines as $line){
-									if(!empty($line)){
-										$line_parts = explode('=', $line);
-										$line_date = explode('*', $line_parts[0]);
-										if(isset($line_date[1])){
-											$line_date[1] = '<span class="text-info">'.$line_date[1].'</span>';
-										}
-										$line_data = explode('|', $line_parts[1]);
-										$json_data = json_decode($line_data[0], true);
-										if(!empty($json_data)){
-											if(strpos($line_data[0], 'Sentiment') !== false){
-												foreach($json_data as $key0 => $value0){
-													$json_data[$key0] = htmlspecialchars_decode($json_data[$key0], ENT_QUOTES);
-													$json_data[$key0] = str_replace('88888888888888888888888888888888888', '=', $json_data[$key0]);
-													$json_data[$key0] = str_replace('999999999999999999999999999', '"', $json_data[$key0]);
-													$json_data[$key0] = str_replace('((^))', '=', $json_data[$key0]);
-													$json_data[$key0] = str_replace('(^)', '=', $json_data[$key0]);
-													$json_data[$key0] = str_replace('((_))', '*', $json_data[$key0]);
-													$json_data[$key0] = str_replace('((-))', '|', $json_data[$key0]);
-												}
-											?>
+							$report_entries = \Core\Reports\ReportLogService::getEntries(
+								$_SESSION['user_in'],
+								$current_date,
+								'orderId',
+								use_session('config_'.$_SESSION['user_in'].'.txt_hide') == 'show'
+							);
+							foreach($report_entries as $entry){
+								$line_date = $entry['date_parts'];
+								if(isset($line_date[1])){
+									$line_date[1] = '<span class="text-info">'.$line_date[1].'</span>';
+								}
+								$line_data = array_pad($entry['data_parts'], 10, '');
+								if($entry['is_sentiment']){
+							?>
 											<tr>
 												<td width="10%"><p><?php echo implode(' <br />', $line_date); ?></p></td>
 												<td width="84%" colspan="8">
 													<p class="text-balance"><?php 
-														echo implode('<br />', $json_data);
+														echo $entry['message'];
 													?></p>
 												</td>
 												<td width="6%"><p class="text-warning">Amount: <br /> <?php echo $line_data[4] ?></p></td>
@@ -400,37 +161,7 @@
 											<tr>
 												<td width="10%"><p><?php echo implode(' <br />', $line_date); ?></p></td>
 												<td width="34%">
-													<p class="<?php 
-													$transaction_exe = 0;
-													if(strpos($line_data[0], 'Open Orders Count') !== false){ ?>text-info<?php } 
-													elseif(strpos($line_data[0], 'There is not enough money') !== false){ ?>text-balance<?php } 
-													elseif(strpos($line_data[0], 'The price is stagnant') !== false){ ?>text-balance<?php } 
-													elseif(strpos($line_data[0], 'Buying is blocked') !== false){ ?>text-warning<?php }  
-													elseif(strpos($line_data[0], 'End of the selling all') !== false){ ?>text-selling<?php }  
-													elseif(strpos($line_data[0], 'Gained') !== false){ ?>text-success<?php } 
-													elseif(strpos($line_data[0], 'In the selling all period') !== false){ ?>text-selling<?php }  
-													elseif(strpos($line_data[0], 'No transaction has been') !== false){ ?>text-balance<?php } 
-													elseif(strpos($line_data[0], 'Price limit is reached') !== false){ ?>text-warning<?php } 
-													elseif(strpos($line_data[0], 'Out of the time') !== false){ ?>text-warning<?php } 
-													elseif(strpos($line_data[0], 'No triggers were fired') !== false){ ?>text-balance<?php } 
-													elseif(strpos($line_data[0], 'No purchase is allowed') !== false){ ?>text-balance<?php } 
-													elseif(strpos($line_data[0], 'The today\'s total has reached') !== false){ ?>text-warning<?php } 
-													elseif(strpos($line_data[0], "\"orderId\"") !== false) {
-													$transaction_exe = 1; 
-													$transaction_count++;
-													?>transaction_exe<?php
-													}
-													?>" id="<?php if($transaction_exe == 1){ echo "transaction_exe". $transaction_count; } ?>"><?php
-														if($transaction_exe == 1){
-															if($hide_reveal == 'show'){
-																echo convert_array($json_data);
-															} else {
-																echo "Transaction entry. This entry is hidden for security purpose.";
-															}
-														} else {
-															echo convert_array($json_data);
-														}
-													?></p>
+													<p class="<?php echo $entry['message_class']; ?><?php if($entry['is_transaction']){ ?> transaction_exe<?php } ?>" id="<?php if($entry['is_transaction']){ echo 'transaction_exe'.$entry['transaction_count']; } ?>"><?php echo $entry['message']; ?></p>
 												</td>
 												<td width="8%"><p class="<?php if($line_data[6] == 'past ratio'){ if($line_data[3] == 'buy' && isset($line_data[3])) { ?>text-success<?php } else { ?>text-danger<?php } } ?>">Past Ratio (1st): <br /><?php echo $line_data[5] ?></p></td>
 												<td width="8%"><p class="<?php if($line_data[6] == 'past median' && $line_data[8] == 'extra_long'){ if($line_data[3] == 'buy' && isset($line_data[3])) { ?>text-success<?php } else { ?>text-danger<?php } } ?>">Past Range (2nd): <br /><?php 
@@ -456,12 +187,9 @@
 												<td width="2%"><p class="<?php if($line_data[3] == 'buy' && isset($line_data[3])) { ?>text-success<?php } elseif($line_data[3] == 'sell' && isset($line_data[3])) { ?>text-danger<?php } ?>">Action: <br /> <?php if(isset($line_data[3]) && !empty($line_data[3])){ echo $line_data[3]; } else { echo '0'; } ?></p></td>
 												<td width="6%"><p class="text-warning">Amount: <br /> <?php echo $line_data[4] ?></p></td>
 											</tr>
-											<?php										
+											<?php
 											}
-										}
-									}
 								}
-							}
 						?>
 						</tbody>
 						</table>

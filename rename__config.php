@@ -1,4 +1,10 @@
 <?php
+	// Rename rename__config.php file to config.php
+	// Move file up -> sessions/data/move_out -> sessions/data
+	// Move file up -> crypto/move_out -> crypto
+	
+	date_default_timezone_set('America/New_York');
+
 	$default_stock = 'bitcoin_USD';
 	$connect = '';
 	

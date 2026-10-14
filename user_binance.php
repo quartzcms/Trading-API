@@ -37,75 +37,25 @@
 		</div>
 		<?php
 			$error = '';
-			
-			if(isset($_POST['user_id'])){
-				if(!empty($_POST['user_id'])){
-					$_SESSION['user_in'] = 'binance_'.$_POST['user_id'];
+			if (isset($_POST['user_id']) && $_POST['user_id'] !== '') {
+				$_SESSION['user_in'] = 'binance' . '_' . $_POST['user_id'];
+			}
+
+			if (isset($_POST['user_add'])) {
+				$account_result = \Core\Accounts\ExchangeAccountService::create('binance', $_POST['user_add']);
+				$error = $account_result['error'];
+				if ($account_result['user'] !== null) {
+					$_SESSION['user_in'] = $account_result['user'];
 				}
 			}
-			
-			if(isset($_POST['user_add'])){
-				if(!preg_match('/[^A-Za-z0-9]/', $_POST['user_add']) && !empty($_POST['user_add'])){
-					$path1 = 'config/binance_'.$_POST['user_add'].'.txt';
-					$path2 = 'sessions/data/config_binance_'.$_POST['user_add'].'.txt';
-					$path3 = 'config/logs/binance_'.$_POST['user_add'];
-					$path4 = 'config/stats/binance_'.$_POST['user_add'];
-					if(!file_exists($path1)){
-						$write = fopen($path1, 'w');
-						fwrite($write, ' ');
-						fflush($write);
-						fclose($write);
-						
-						mkdir($path2);
-						mkdir($path3);
-						mkdir($path4);
-						$_SESSION['user_in'] = 'binance_'.$_POST['user_add'];
-					} else {
-						$error = 'Your username is invalid.';
-					}
-				} else {
-					$error = 'The username is not valid or contains bad characters.';
+
+			if (isset($_SESSION['user_in'])) {
+				if (isset($_POST['api_key'], $_SESSION['user_verified']) && $_POST['api_key'] !== '') {
+					\Core\Accounts\ExchangeAccountService::saveSettings($_SESSION['user_in'], $_POST);
 				}
-			}
-			
-			if(isset($_POST['api_key']) && isset($_SESSION['user_verified'])){
-				if(!empty($_POST['api_key'])){
-					if(isset($_POST['recommended_mode']) && $_POST['recommended_mode'] != ''){
-						$files = dirToArray('sessions/data/config_'.$_POST['recommended_mode'].'.txt');
-					}	
-					foreach($_POST as $key => $value){
-						if(isset($_POST['recommended_mode']) && $_POST['recommended_mode'] != ''){
-							if(!in_array($key.'.txt', $files)){
-								write_session('config_'.$_SESSION['user_in'].'.txt_'.$key, $value);
-							}
-						} else {
-							write_session('config_'.$_SESSION['user_in'].'.txt_'.$key, $value);
-						}
-					}
-					
-					if(isset($_POST['recommended_mode']) && $_POST['recommended_mode'] != ''){
-						foreach($files as $key => $value){
-							$filename = str_replace('.txt', '', $value);
-							$content_file = use_session('config_'.$_POST['recommended_mode'].'.txt_'.$filename);							
-							write_session('config_'.$_SESSION['user_in'].'.txt_'.$filename, $content_file);
-						}
-					}
-				}
-			}
-				
-			if (isset($_SESSION['user_in'])){ 
-				if(file_exists('config/'.$_SESSION['user_in'].'.txt')){
-					$_SESSION['user_verified'] = 1;
-				}
-				
-				$files = dirToArray('sessions/data/config_'.$_SESSION['user_in'].'.txt');
-				$config_options = array();
-				foreach($files as $key => $value){
-					$name = str_replace('.txt', '', $value);
-					$config_options[$name] = use_session('config_'.$_SESSION['user_in'].'.txt_'.$name);
-				}
-				
-				if(isset($_SESSION['user_verified']) && $_SESSION['user_verified'] == 1){
+
+				$config_options = \Core\Accounts\ExchangeAccountService::loadSettings($_SESSION['user_in']);
+				if (isset($_SESSION['user_verified']) && $_SESSION['user_verified'] == 1) {
 			?>
 			<div class="container-fluid">
 				<div class="row" style="display:none;">

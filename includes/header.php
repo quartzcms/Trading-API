@@ -14,8 +14,9 @@ ini_set('display_errors', 1);
 	$api_data = array();
 	$api_median_trigger = 0;
 	if(isset($_SESSION['user_in'])){
-		$files = dirToArray('sessions/data/config_'.$_SESSION['user_in'].'.txt');
-		$files2 = dirToArray('sessions/data/'.$_SESSION['user_in'].'.txt');
+		$session_data_directory = \Core\Support\SessionStore::getDataDirectory();
+		$files = \Core\Support\Filesystem::directoryToArray($session_data_directory . DIRECTORY_SEPARATOR . 'config_' . $_SESSION['user_in'] . '.txt');
+		$user_session_files = \Core\Support\Filesystem::directoryToArray($session_data_directory . DIRECTORY_SEPARATOR . $_SESSION['user_in'] . '.txt');
 		
 		if(use_session($_SESSION['user_in'].'.txt_hide') == ''){
 			write_session($_SESSION['user_in'].'.txt_hide', 'hide');
@@ -24,7 +25,7 @@ ini_set('display_errors', 1);
 			$name = str_replace('.txt', '', $value);
 			$config_api_data[$name] = use_session('config_'.$_SESSION['user_in'].'.txt_'.$name);
 		}
-		foreach($files2 as $key => $value){
+		foreach($user_session_files as $key => $value){
 			$name = str_replace('.txt', '', $value);
 			$api_data[$name] = use_session($_SESSION['user_in'].'.txt_'.$name);
 		}
@@ -1619,22 +1620,4 @@ ini_set('display_errors', 1);
 		}
 	</style>
 <?php } ?>
-<?php 
-	function dirToArray($dir) {
-		$result = array();
-		if(is_dir($dir)){
-		   $cdir = scandir($dir);
-		   foreach ($cdir as $key => $value){
-			  if (!in_array($value,array(".",".."))){
-				 if (is_dir($dir . DIRECTORY_SEPARATOR . $value)){
-					$result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
-				 }else{
-					$result[] = $value;
-				 }
-			  }
-		   }
-		}
-		return $result;
-	}
-?>
 	

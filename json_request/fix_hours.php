@@ -1,25 +1,11 @@
 <?php
+require_once dirname(__DIR__) . '/core/bootstrap.php';
 
 $path = "../";
 include $path."config.php";
 $path = $document_root;
 
 //$stock = 'etherum_USD';
-
-function dirToArray($dir) {
-   $result = array();
-   $cdir = scandir($dir);
-   foreach ($cdir as $key => $value){
-	  if (!in_array($value,array(".",".."))){
-		 if (is_dir($dir . DIRECTORY_SEPARATOR . $value)){
-			$result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
-		 }else{
-			$result[] = $value;
-		 }
-	  }
-   }
-   return $result;
-}
 
 function folder($folder, $path, $stock){
 	$files = dirToArray('../crypto/'.$stock.'/data_'.$folder);
@@ -28,9 +14,9 @@ function folder($folder, $path, $stock){
 		$value_explode = explode("\n", $data_output);
 		$array_values = array();
 
-		foreach($value_explode as $value2){
-			if(!empty($value2)){
-				$get_hour = explode(':', $value2);
+		foreach($value_explode as $line_value){
+			if(!empty($line_value)){
+				$get_hour = explode(':', $line_value);
 				
 				$hour = substr($get_hour[0], 0, 2);
 				$minute = substr($get_hour[0], 2, 2);
